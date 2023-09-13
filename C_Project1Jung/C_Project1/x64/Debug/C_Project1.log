@@ -1,0 +1,6 @@
+﻿  main.c
+D:\work_C\C_Project1\C_Project1\main.c(40,2): warning C4013: '_getch'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+D:\work_C\C_Project1\C_Project1\main.c(46,11): warning C4013: 'main_menu'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+D:\work_C\C_Project1\C_Project1\main.c(51,19): warning C4013: 'search_menu'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+D:\work_C\C_Project1\C_Project1\main.c(56,19): warning C4013: 'sub_menu'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+  C_Project1.vcxproj -> D:\work_C\C_Project1\x64\Debug\C_Project1.exe
