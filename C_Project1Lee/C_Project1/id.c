@@ -135,6 +135,8 @@ int id() {
 			printf("삭제완료\n");
 			fclose(fp);
 		}
+		
+
 
 
 		else {

@@ -15,9 +15,7 @@ typedef enum {
 	MAIN_EXIT			// 종료
 } MAIN_MENU;
 
-extern int main_menu();
-extern int import_menu();
-extern int spend_menu(); 
+extern int main_menu();// extern은 생략가능
+extern int import_menu(); 
 extern int check_menu();
-extern void file_open();
 
