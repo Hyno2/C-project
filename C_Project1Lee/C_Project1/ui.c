@@ -6,27 +6,17 @@
 
 void title()
 {
-	int x = 5;
-	int y = 3;
-	gotoxy(x, y + 0); printf("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-	gotoxy(x, y + 1); printf("■							     ■");
-	gotoxy(x, y + 2); printf("■							     ■");
-	gotoxy(x, y + 3); printf("■							     ■");
-	gotoxy(x, y + 4); printf("■							     ■");
-	gotoxy(x, y + 5); printf("■							     ■");
-	gotoxy(x, y + 6); printf("■							     ■");
-	gotoxy(x, y + 7); printf("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-	gotoxy(x + 12, y + 2); printf("가 계 부");
-	gotoxy(x + 33, y + 4); printf("만든날짜	: 2023.09.13");
-	gotoxy(x, y + 12); printf("메인화면 이동은 아무키나 누르세요!!!");
+	printf("           (\\____/)\n");
+	printf("           / @__@ \\\n");
+	printf("          (  (oo)  )\n");
+	printf("           `-.~~.-'\n");
+	printf("            /    \\\n");
+	printf("          @/      \\@\n");
+	printf("         (/ /    \\ \\)\n");
+	printf("          WW      WW\n");
 }
 
-void gotoxy(int x, int y)
-{
-	COORD pos = { x, y };
-	// 윈도우 콘솔에서 커서 위치 이동
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
+
 
 void set_cursor_type(CURSOR_TYPE type)
 {
