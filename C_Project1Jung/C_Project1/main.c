@@ -32,7 +32,33 @@ int main() {
 	system("cls");
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
+	
 	while (1) {
+		int totalincome = 0;
+		int totalout = 0;
+		income in = { 0 };
+		out ou = { 0 };
+		FILE* fp1 = fopen("income", "rb");
+		FILE* fp2 = fopen("out", "rb");
+		while (fread(&in, sizeof(income), 1, fp1) > 0) {
+			totalincome += in.money;
+		}
+		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
+			totalout += ou.money;
+		}
+		font_color(RED);
+		printf("총 지출 : %d원\n", totalout);
+		font_color(WHITE);
+		printf("총 수입 : %d원\n", totalincome);
+		if (totalincome - totalout > 0) {
+			font_color(GREEN);
+			printf("현재 자산 : %d원\n", totalincome - totalout);
+		}
+		else if (totalincome - totalout <= 0) {
+			font_color(RED);
+			printf("현재 자산 : %d원\n", totalincome - totalout);
+		}
+		font_color(WHITE);
 		switch (main_menu()) {
 		case 1: {
 			income in = { 0 };
@@ -215,12 +241,12 @@ int main() {
 			}
 			break;
 		case 4: // 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
-		{
-			FILE* fp1 = fopen("income", "wb");
-			FILE* fp2 = fopen("out", "wb");
-			fclose(fp1);
-			fclose(fp2);
-		}
+			{
+				FILE* fp1 = fopen("income", "wb");
+				FILE* fp2 = fopen("out", "wb");
+				fclose(fp1);
+				fclose(fp2);
+			}
 			break;
 		case 5:
 			printf("프로그램을 종료합니다.\n");
