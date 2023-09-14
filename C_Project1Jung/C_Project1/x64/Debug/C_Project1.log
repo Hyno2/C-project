@@ -1,3 +1,0 @@
-﻿  main.c
-C:\Users\KB\Desktop\C_Project1Jung\C_Project1\main.c(86,19): warning C4013: 'type_menu'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
-  C_Project1.vcxproj -> C:\Users\KB\Desktop\C_Project1Jung\x64\Debug\C_Project1.exe
