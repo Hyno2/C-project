@@ -1,8 +1,26 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "menu.h"
+int menuInput(int start, int end)
+{
+	int menu;
+	scanf("%d", &menu);
+	while (1)
+	{
+		if (menu < start || menu>end)
+		{
+			// 입력 버퍼 비우기 
+			rewind(stdin);
+			printf("다시 입력해주세요.");
+			scanf("%d", &menu);
+			continue;
+		}
+		break;
 
-int main_menu()
+	}
+	return menu;
+}
+void printMenu()
 {
 	printf("=============================\n");
 	printf("         가 계 부\n");
@@ -14,9 +32,27 @@ int main_menu()
 	printf("5.종료\n");
 	printf("=============================\n");
 	printf("메뉴 선택:");
-	int menu;
-	scanf("%d", &menu);
-	return menu;
+}
+int main_menu()
+{
+	printMenu();
+//	menuInput(1, 5);
+	//int menu;
+	//scanf("%d", &menu);
+	//while (1)
+	//{
+	//	if (menu < 1 || menu>5)
+	//	{
+	//		// 입력 버퍼 비우기 
+	//		rewind(stdin);
+	//		printf("다시 입력해주세요.");
+	//		scanf("%d", &menu);
+	//		continue;
+	//	}
+	//	break;
+
+	//}
+	return menuInput(1, 5);
 }
 
 int type_menu()
@@ -33,9 +69,10 @@ int type_menu()
 	printf("7.기타\n");
 	printf("=============================\n");
 	printf("입력 번호 :");
-	int menu;
-	scanf("%d", &menu);
-	return menu;
+//	int menu;
+//	scanf("%d", &menu);
+//	return menu;
+	return menuInput(1, 7);
 }
 
 int import_menu()
@@ -47,9 +84,10 @@ int import_menu()
 	printf("2.현금\n");
 	printf("=============================\n");
 	printf("입력 번호 :");
-	int menu;
-	scanf("%d", &menu);
-	return menu;
+//	int menu;
+//	scanf("%d", &menu);
+//	return menu;
+	return menuInput(1, 2);
 }
 
 int check_menu()
@@ -60,7 +98,8 @@ int check_menu()
 	printf("3.전체내역 조회\n");
 	printf("4.나가기\n");
 	printf("=============================\n");
-	int menu;
-	scanf("%d", &menu);
-	return menu;
+//	int menu;
+//	scanf("%d", &menu);
+//	return menu;
+	return menuInput(1, 4);
 }

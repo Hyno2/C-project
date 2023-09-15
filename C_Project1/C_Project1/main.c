@@ -7,7 +7,6 @@
 #include <windows.h>// Sleep()
 #include "menu.h"
 #include "ui.h"
-#include "id.h"
 
 typedef struct _income {
 	int month;
@@ -30,7 +29,7 @@ int main() {
 	HWND console = GetConsoleWindow();
 	RECT r;
 	GetWindowRect(console, &r);
-	MoveWindow(console, r.left, r.top, 400, 500, TRUE);
+	MoveWindow(console, r.left, r.top, 500, 500, TRUE);
 
 	set_cursor_type(NOCURSOR);
 	font_color(LIGHT_GREEN);
@@ -71,20 +70,20 @@ int main() {
 		switch (main_menu()) {
 		case 1: {
 			income in = { 0 };
-			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
+			printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
 			scanf("%d %d", &in.month, &in.day);
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 (9월 5일 일시 ex.9 5): \n");
+				printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
 				scanf("%d %d", &in.month, &in.day);
 			}
 			// 금액입력받기위한 변수 select
 			int select = 0;
 
 			while (select != 1) {
-				printf("금액 입력(원 단위): ");
+				printf("금액 입력 : ");
 				scanf("%d", &in.money);
 				
 				printf("┌─ 확인─────────────────────────────┐\n");
@@ -98,7 +97,7 @@ int main() {
 					in.money;
 				}
 				else if (select == 2) {
-					printf("금액을 다시 입력해 주세요: ");
+					printf("금액을 다시 입력해 주세요 : ");
 					scanf("%d", &in.money);
 				}
 				else {
@@ -106,7 +105,7 @@ int main() {
 				}
 		
 			}
-			printf("메모 입력: ");
+			printf("메모 입력 : ");
 			scanf("%s", in.memo);
 
 			FILE* fp = fopen("income.bin", "ab");
@@ -127,9 +126,8 @@ int main() {
 				printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
 				scanf("%d %d", &ou.month, &ou.day);
 			}
-			printf("지출 금액(원 단위): ");
+			printf("지출 금액 : ");
 			scanf("%d", &ou.money);
-			system("cls");
 			int submenu0 = type_menu();
 			if (submenu0 == 1) {
 				strcpy(ou.type, "식비");
@@ -154,7 +152,6 @@ int main() {
 			}
 			printf("메모 입력 (ex.주류비,통신비 등등): ");
 			scanf("%s", ou.memo);
-			system("cls");
 			int submenu1 = import_menu();
 			if (submenu1 == 1) {
 				strcpy(ou.pay, "카드");
@@ -197,9 +194,9 @@ int main() {
 					if (day == in.day) {
 						totalincome += in.money;
 						printf("수익내역 %d 번째\n", count++);
-						printf("날짜: %d월 %d일\n", in.month, in.day);
-						printf("금액: %d\n", in.money);
-						printf("메모: %s\n", in.memo);
+						printf("날짜 : %d월 %d일\n", in.month, in.day);
+						printf("금액 : %d\n", in.money);
+						printf("메모 : %s\n", in.memo);
 						printf("-----------------\n");
 					}
 				}
@@ -213,11 +210,11 @@ int main() {
 							cash += ou.money;
 						}
 						printf("지출내역 %d 번째\n", cnt++);
-						printf("날짜: %d월 %d일\n", ou.month, ou.day);
-						printf("금액: %d원\n", ou.money);
-						printf("타입: %s\n", ou.type);
-						printf("메모: %s\n", ou.memo);
-						printf("결제수단: %s\n", ou.pay);
+						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
+						printf("금액 : %d원\n", ou.money);
+						printf("타입 : %s\n", ou.type);
+						printf("메모 : %s\n", ou.memo);
+						printf("결제수단 : %s\n", ou.pay);
 						printf("-----------------\n");
 					}
 				}
@@ -226,8 +223,9 @@ int main() {
 				// 230915 카드, 현금 총 사용금액 추가
 				printf("%d일 카드 총 사용 금액 : %d원\n", day, card);
 				printf("%d일 현금 총 사용 금액 : %d원\n", day, cash);
-				printf("%d일 총 수익 금액: %d원, 총 지출 금액: %d원\n", day, totalincome, totalout);
-				printf("%d일 총 합산 금액: %d원\n", day, totalincome - totalout);
+				printf("%d일 총 수익 금액 : %d원\n", day, totalincome);
+				printf("%d일 총 총 지출 금액 : %d원\n", day, totalout);
+				printf("%d일 총 합산 금액 : %d원\n", day, totalincome - totalout);
 				system("pause");
 			}
 			if (submenu2 == 2) {
@@ -245,7 +243,7 @@ int main() {
 				printf("몇 월 내역을 출력하시겠습니까? : ");
 				scanf("%d", &month);
 				// 230914 month변수는 1~12까지만 받게끔 완료.
-				while (month < 1 || month > 12) {
+				while (month < 1 || month > 12 ) {
 					printf("잘못된 날짜 입력!\n");
 					printf("다시 입력해 주세요.\n");
 					printf("몇 월 내역을 출력하시겠습니까? : ");
@@ -255,9 +253,9 @@ int main() {
 					if (month == in.month) {
 						totalincome += in.money;
 						printf("수익내역 %d 번째\n", count++);
-						printf("날짜: %d월 %d일\n", in.month, in.day);
-						printf("금액: %d\n", in.money);
-						printf("메모: %s\n", in.memo);
+						printf("날짜 : %d월 %d일\n", in.month, in.day);
+						printf("금액 : %d\n", in.money);
+						printf("메모 : %s\n", in.memo);
 						printf("-----------------\n");
 					}
 				}
@@ -271,20 +269,21 @@ int main() {
 							cash += ou.money;
 						}
 						printf("지출내역 %d 번째\n", cnt++);
-						printf("날짜: %d월 %d일\n", ou.month, ou.day);
-						printf("금액: %d원\n", ou.money);
-						printf("타입: %s\n", ou.type);
-						printf("메모: %s\n", ou.memo);
-						printf("결제수단: %s\n", ou.pay);
+						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
+						printf("금액 : %d원\n", ou.money);
+						printf("타입 : %s\n", ou.type);
+						printf("메모 : %s\n", ou.memo);
+						printf("결제수단 : %s\n", ou.pay);
 						printf("-----------------\n");
 					}
 				}
 				fclose(fp1);
 				fclose(fp2);
-				printf("%d월 카드 총 사용금액: %d원\n", month, card);
-				printf("%d월 현금 총 사용금액: %d원\n", month, cash);
-				printf("%d월 총 수익 금액: %d원, 총 지출 금액: %d원\n", month, totalincome, totalout);
-				printf("%d월 총 합산 금액: %d원\n", month, totalincome - totalout);
+				printf("%d월 카드 총 사용금액 : %d원\n", month, card);
+				printf("%d월 현금 총 사용금액 : %d원\n", month, cash);
+				printf("%d월 총 수익 금액: %d원\n", month, totalincome);
+				printf("%d월 총 지출 금액 : %d원\n", month, totalout);
+				printf("%d월 총 합산 금액 : %d원\n", month, totalincome - totalout);
 				system("pause");
 			}
 
@@ -301,10 +300,11 @@ int main() {
 				FILE* fp2 = fopen("out.bin", "rb");
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					totalincome += in.money;
+
 					printf("수익내역 %d 번째\n", count++);
-					printf("날짜: %d월 %d일\n", in.month, in.day);
-					printf("금액: %d원\n", in.money);
-					printf("메모: %s\n", in.memo);
+					printf("날짜 : %d월 %d일\n", in.month, in.day);
+					printf("금액 : %d원\n", in.money);
+					printf("메모 : %s\n", in.memo);
 					printf("-----------------\n");
 				}
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
@@ -316,11 +316,11 @@ int main() {
 						cash += ou.money;
 					}
 					printf("지출내역 %d 번째\n", cnt++);
-					printf("날짜: %d월 %d일\n", ou.month, ou.day);
-					printf("금액: %d원\n", ou.money);
-					printf("타입: %s\n", ou.type);
-					printf("메모: %s\n", ou.memo);
-					printf("결제수단: %s\n", ou.pay);
+					printf("날짜 : %d월 %d일\n", ou.month, ou.day);
+					printf("금액 : %d원\n", ou.money);
+					printf("타입 : %s\n", ou.type);
+					printf("메모 : %s\n", ou.memo);
+					printf("결제수단 : %s\n", ou.pay);
 					printf("-----------------\n");
 				}
 				fclose(fp1);
@@ -328,7 +328,9 @@ int main() {
 				// 230915 카드, 현금 총 사용금액 추가
 				printf("카드 총 사용 금액: %d원\n", card);
 				printf("현금 총 사용 금액: %d원\n", cash);
-				printf("총 수익 금액: %d원, 총 지출 금액: %d원\n", totalincome, totalout);
+				printf("총 수익 금액: %d원\n", totalincome);
+				printf("총 지출 금액: %d원\n", totalout);
+
 				printf("총 합산 금액: %d원\n", totalincome - totalout);
 				system("pause");
 			}
