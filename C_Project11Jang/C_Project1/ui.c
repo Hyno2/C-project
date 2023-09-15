@@ -17,12 +17,6 @@ void title()
 }
 
 
-void gotoxy(int x, int y)
-{
-	COORD pos = { x, y };
-	// 윈도우 콘솔에서 커서 위치 이동
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
 
 void set_cursor_type(CURSOR_TYPE type)
 {

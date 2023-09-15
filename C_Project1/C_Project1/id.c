@@ -8,21 +8,22 @@
 struct User {
 	char id[50];
 	char password[50];
-	char name[20];
+	
 };
+
+struct User users[] = { 0 };
 
 // 사용자 정보를 파일에 저장하는 함수
 void saveUsers(struct User users[], int numUsers) {
-	FILE* fp = fopen("users.bin", "wb");
+	FILE* fp = fopen("users.bin", "ab");
 	if (fp == NULL) {
 		printf("파일을 열 수 없습니다.\n");
 		return;
 	}
 
 	for (int i = 0; i < numUsers; i++) {
-		fprintf(fp, "%s %s\n", users[i].id, users[i].password, users[i].name);
+		//fwrtie(&users,  sizeof(struct User),1, fp);
 	}
-
 	fclose(fp);
 }
 
@@ -32,12 +33,10 @@ int loadUsers(struct User users[]) {
 	if (fp == NULL) {
 		return 0; // 파일이 없으면 0 반환
 	}
-
 	int numUsers = 0;
 	while (fscanf(fp, "%s %s", users[numUsers].id, users[numUsers].password) != EOF) {
 		numUsers++;
 	}
-
 	fclose(fp);
 	return numUsers;
 }
@@ -52,7 +51,7 @@ int checkID(struct User users[], int numUsers, const char* id) {
 	return 0; // 중복된 ID가 없음
 }
 
-int id() {
+int idc() {
 	struct User users[MAX_USERS];
 	int numUsers = 0;
 
@@ -60,6 +59,7 @@ int id() {
 	numUsers = loadUsers(users);
 
 	while (1) {
+		printf("가계부 ver1.0\n");
 		printf("1. 가입\n");
 		printf("2. 로그인\n");
 		printf("3. 종료\n");
@@ -74,22 +74,19 @@ int id() {
 				char new_id[50];
 				printf("사용자 ID: ");
 				scanf("%s", new_id);
-				
+
 
 				if (checkID(users, numUsers, new_id)) {
 					printf("이미 사용 중인 ID입니다. 다른 ID를 선택하세요.\n");
 
 				}
 
-				else if(strcmp(users[numUsers].id, new_id)==0) {					
+				else if (strcmp(users[numUsers].id, new_id) == 0) {
 
-					
+
 					printf("비밀번호: ");
 					scanf("%s", users[numUsers].password);
-
-					printf("이름: ");
-					scanf("%s", users[numUsers].name);
-
+										
 					printf("가입이 완료되었습니다.\n");
 					numUsers++;
 
@@ -102,20 +99,18 @@ int id() {
 			}
 		}
 		else if (choice == 2) {
-			char entered_id[50];
-			char entered_password[50];
+			char plus_id[50];
+			char plus_password[50];
 
 			printf("사용자 이름: ");
-			scanf("%s", entered_id);
+			scanf("%s", plus_id);
 
 			printf("비밀번호: ");
-			scanf("%s", entered_password);
-
-
+			scanf("%s", plus_password);
 
 			for (int i = 0; i < numUsers; i++) {
-				if (strcmp(users[i].id, entered_id) == 0 && strcmp(users[i].password, entered_password) == 0) {
-					printf("로그인 성공! %s님 환영합니다.\n", users[i].name);
+				if (strcmp(users[i].id, plus_id) == 0 && strcmp(users[i].password, plus_password) == 0) {
+					printf("로그인 성공! %s님 환영합니다.\n", users[i].id);
 					break;
 				}
 				else {
@@ -127,7 +122,6 @@ int id() {
 		}
 		else if (choice == 3) {
 			printf("프로그램 종료!\n");
-			
 			exit(0);
 		}
 		else if (choice == 4) {
@@ -135,10 +129,6 @@ int id() {
 			printf("삭제완료\n");
 			fclose(fp);
 		}
-		
-
-
-
 		else {
 			printf("잘못된 메뉴 선택!!\n");
 

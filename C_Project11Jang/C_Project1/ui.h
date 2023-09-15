@@ -27,6 +27,5 @@ typedef enum {
 } FONT_COLOR;
 
 void title();
-void gotoxy(int x, int y);
 void set_cursor_type(CURSOR_TYPE type);
 void font_color(FONT_COLOR color);
