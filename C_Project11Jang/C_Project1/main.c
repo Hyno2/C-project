@@ -33,25 +33,26 @@ int main() {
 	system("cls");
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
-	idc();
+	//idc();
 	
 	while (1) {
 		int totalincome = 0;
 		int totalout = 0;
 		income in = { 0 };
 		out ou = { 0 };
-		FILE* fp1 = fopen("income", "rb");
-		FILE* fp2 = fopen("out", "rb");
+		FILE* fp1 = fopen("income.bin", "rb");
+		FILE* fp2 = fopen("out.bin", "rb");
 		while (fread(&in, sizeof(income), 1, fp1) > 0) {
 			totalincome += in.money;
 		}
 		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 			totalout += ou.money;
 		}
-		font_color(RED);
-		printf("총 지출 : %d원\n", totalout);
 		font_color(WHITE);
 		printf("총 수입 : %d원\n", totalincome);
+		font_color(RED);
+		printf("총 지출 : %d원\n", totalout);
+		
 		if (totalincome - totalout > 0) {
 			font_color(GREEN);
 			printf("현재 자산 : %d원\n", totalincome - totalout);
@@ -66,22 +67,51 @@ int main() {
 			income in = { 0 };
 			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
 			scanf("%d %d", &in.month, &in.day);
+			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
+			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
+				printf("잘못된 날짜 입력!\n");
+				printf("다시 입력해 주세요.\n");
+				printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
+				scanf("%d %d", &in.month, &in.day);
+			}
 			printf("금액 입력(원 단위): ");
 			scanf("%d", &in.money);
+			// 230914 금액 확인메세지 추가 근디 뭔가 애매~ 한 느낌..
+			printf("┌─ 확인─────────────────────────────┐\n");
+			printf("│  입력하신 금액은 %d원 입니다. ☜\n", in.money);
+			printf("│\t\t(1.예  2.아니오)    │\n");
+			printf("└───────────────────────────────────┘\n");
+			printf("  선택: ");
+			int select;
+			scanf("%d", &select);
+			if (select == 1) {
+				in.money;
+			}
+			else {
+				printf("금액을 다시 입력해 주세요: ");
+				scanf("%d", &in.money);
+			}
 			printf("메모 입력: ");
 			scanf("%s", in.memo);
-			
-			FILE* fp = fopen("income", "ab");
+
+			FILE* fp = fopen("income.bin", "ab");
 			fwrite(&in, sizeof(income), 1, fp);
 			fclose(fp);
 			printf("저장 완료!\n");
 			system("pause");
 		}
-			break;
+			  break;
 		case 2: {
 			out ou = { 0 };
 			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
 			scanf("%d %d", &ou.month, &ou.day);
+			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
+			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
+				printf("잘못된 날짜 입력!\n");
+				printf("다시 입력해 주세요.\n");
+				printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
+				scanf("%d %d", &ou.month, &ou.day);
+			}
 			printf("지출 금액(원 단위): ");
 			scanf("%d", &ou.money);
 			system("cls");
@@ -117,13 +147,13 @@ int main() {
 			else if (submenu1 == 2) {
 				strcpy(ou.pay, "현금");
 			}
-			FILE* fp = fopen("out", "ab");
+			FILE* fp = fopen("out.bin", "ab");
 			fwrite(&ou, sizeof(out), 1, fp);
 			fclose(fp);
 			printf("저장 완료!\n");
 			system("pause");
 		}
-			break;
+			  break;
 		case 3:
 			system("cls");
 			int submenu2 = check_menu();
@@ -134,11 +164,18 @@ int main() {
 				int totalout = 0;
 				income in = { 0 };
 				out ou = { 0 };
-				FILE* fp1 = fopen("income", "rb");
-				FILE* fp2 = fopen("out", "rb");
+				FILE* fp1 = fopen("income.bin", "rb");
+				FILE* fp2 = fopen("out.bin", "rb");
 				int day = 0;
 				printf("궁금한 날을 입력해주세용 : ");
 				scanf("%d", &day);
+				// 230914 day변수는 1~31까지만 받게끔 완료.
+				while (day < 1 || day>31) {
+					printf("잘못된 날짜 입력!\n");
+					printf("다시 입력해 주세요.\n");
+					printf("궁금한 날을 다시 입력해주세용 : ");
+					scanf("%d", &day);
+				}
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					if (day == in.day) {
 						totalincome += in.money;
@@ -163,8 +200,8 @@ int main() {
 				}
 				fclose(fp1);
 				fclose(fp2);
-				printf("%d일 총 수익 금액: %d원, 총 지출 금액: %d원\n",day, totalincome, totalout);
-				printf("%d일 총 합산 금액: %d원\n",day, totalincome - totalout);
+				printf("%d일 총 수익 금액: %d원, 총 지출 금액: %d원\n", day, totalincome, totalout);
+				printf("%d일 총 합산 금액: %d원\n", day, totalincome - totalout);
 				system("pause");
 			}
 			if (submenu2 == 2) {
@@ -174,11 +211,18 @@ int main() {
 				int totalout = 0;
 				income in = { 0 };
 				out ou = { 0 };
-				FILE* fp1 = fopen("income", "rb");
-				FILE* fp2 = fopen("out", "rb");
+				FILE* fp1 = fopen("income.bin", "rb");
+				FILE* fp2 = fopen("out.bin", "rb");
 				int month = 0;
-				printf("몇월 내역을 출력하시겠습니까? : ");
+				printf("몇 월 내역을 출력하시겠습니까? : ");
 				scanf("%d", &month);
+				// 230914 month변수는 1~12까지만 받게끔 완료.
+				while (month < 1 || month > 12) {
+					printf("잘못된 날짜 입력!\n");
+					printf("다시 입력해 주세요.\n");
+					printf("몇 월 내역을 출력하시겠습니까? : ");
+					scanf("%d", &month);
+				}
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					if (month == in.month) {
 						totalincome += in.money;
@@ -215,20 +259,20 @@ int main() {
 				int totalout = 0;
 				income in = { 0 };
 				out ou = { 0 };
-				FILE* fp1 = fopen("income", "rb");
-				FILE* fp2 = fopen("out", "rb");
+				FILE* fp1 = fopen("income.bin", "rb");
+				FILE* fp2 = fopen("out.bin", "rb");
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					totalincome += in.money;
-					printf("수익내역 %d 번째\n",count++);
-					printf("날짜: %d월 %d일\n",in.month, in.day);
+					printf("수익내역 %d 번째\n", count++);
+					printf("날짜: %d월 %d일\n", in.month, in.day);
 					printf("금액: %d원\n", in.money);
 					printf("메모: %s\n", in.memo);
 					printf("-----------------\n");
 				}
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 					totalout += ou.money;
-					printf("지출내역 %d 번째\n",cnt++);
-					printf("날짜: %d월 %d일\n",ou.month, ou.day);
+					printf("지출내역 %d 번째\n", cnt++);
+					printf("날짜: %d월 %d일\n", ou.month, ou.day);
 					printf("금액: %d원\n", ou.money);
 					printf("타입: %s\n", ou.type);
 					printf("메모: %s\n", ou.memo);

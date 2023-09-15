@@ -22,7 +22,7 @@ void saveUsers(struct User users[], int numUsers) {
 	}
 
 	for (int i = 0; i < numUsers; i++) {
-		fwrtie(&users,  sizeof(struct User),1, fp);
+		//fwrtie(&users,  sizeof(struct User),1, fp);
 	}
 	fclose(fp);
 }
