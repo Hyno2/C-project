@@ -177,6 +177,8 @@ int main() {
 				int cnt = 1;
 				int totalincome = 0;
 				int totalout = 0;
+				int card = 0; // 230915 카드변수 추가
+				int cash = 0; // 230915 현금변수 추가
 				income in = { 0 };
 				out ou = { 0 };
 				FILE* fp1 = fopen("income.bin", "rb");
@@ -204,6 +206,12 @@ int main() {
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 					if (day == ou.day) {
 						totalout += ou.money;
+						if (strcmp(ou.pay, "카드") == 0) {     // 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산
+							card += ou.money;
+						}
+						if (strcmp(ou.pay, "현금") == 0) {    // 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산
+							cash += ou.money;
+						}
 						printf("지출내역 %d 번째\n", cnt++);
 						printf("날짜: %d월 %d일\n", ou.month, ou.day);
 						printf("금액: %d원\n", ou.money);
@@ -215,6 +223,9 @@ int main() {
 				}
 				fclose(fp1);
 				fclose(fp2);
+				// 230915 카드, 현금 총 사용금액 추가
+				printf("%d일 카드 총 사용 금액 : %d원\n", day, card);
+				printf("%d일 현금 총 사용 금액 : %d원\n", day, cash);
 				printf("%d일 총 수익 금액: %d원, 총 지출 금액: %d원\n", day, totalincome, totalout);
 				printf("%d일 총 합산 금액: %d원\n", day, totalincome - totalout);
 				system("pause");
@@ -224,6 +235,8 @@ int main() {
 				int cnt = 1;
 				int totalincome = 0;
 				int totalout = 0;
+				int card = 0; // 230915 카드변수 추가
+				int cash = 0; // 230915 현금변수 추가
 				income in = { 0 };
 				out ou = { 0 };
 				FILE* fp1 = fopen("income.bin", "rb");
@@ -251,6 +264,12 @@ int main() {
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 					if (month == ou.month) {
 						totalout += ou.money;
+						if (strcmp(ou.pay, "카드") == 0) {     // 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산
+							card += ou.money;
+						}
+						if (strcmp(ou.pay, "현금") == 0) {    // 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산
+							cash += ou.money;
+						}
 						printf("지출내역 %d 번째\n", cnt++);
 						printf("날짜: %d월 %d일\n", ou.month, ou.day);
 						printf("금액: %d원\n", ou.money);
@@ -262,8 +281,10 @@ int main() {
 				}
 				fclose(fp1);
 				fclose(fp2);
-				printf("%d달 총 수익 금액: %d원, 총 지출 금액: %d원\n", month, totalincome, totalout);
-				printf("%d달 총 합산 금액: %d원\n", month, totalincome - totalout);
+				printf("%d월 카드 총 사용금액: %d원\n", month, card);
+				printf("%d월 현금 총 사용금액: %d원\n", month, cash);
+				printf("%d월 총 수익 금액: %d원, 총 지출 금액: %d원\n", month, totalincome, totalout);
+				printf("%d월 총 합산 금액: %d원\n", month, totalincome - totalout);
 				system("pause");
 			}
 
@@ -272,6 +293,8 @@ int main() {
 				int cnt = 1;
 				int totalincome = 0;
 				int totalout = 0;
+				int card = 0; // 230915 카드변수 추가
+				int cash = 0; // 230915 현금변수 추가
 				income in = { 0 };
 				out ou = { 0 };
 				FILE* fp1 = fopen("income.bin", "rb");
@@ -286,6 +309,12 @@ int main() {
 				}
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 					totalout += ou.money;
+					if (strcmp(ou.pay, "카드") == 0) {     // 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산
+						card += ou.money;
+					}
+					if (strcmp(ou.pay, "현금") == 0) {    // 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산
+						cash += ou.money;
+					}
 					printf("지출내역 %d 번째\n", cnt++);
 					printf("날짜: %d월 %d일\n", ou.month, ou.day);
 					printf("금액: %d원\n", ou.money);
@@ -296,6 +325,9 @@ int main() {
 				}
 				fclose(fp1);
 				fclose(fp2);
+				// 230915 카드, 현금 총 사용금액 추가
+				printf("카드 총 사용 금액: %d원\n", card);
+				printf("현금 총 사용 금액: %d원\n", cash);
 				printf("총 수익 금액: %d원, 총 지출 금액: %d원\n", totalincome, totalout);
 				printf("총 합산 금액: %d원\n", totalincome - totalout);
 				system("pause");
