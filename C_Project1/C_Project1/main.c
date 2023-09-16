@@ -96,13 +96,17 @@ int main() {
 			income in = { 0 };
 			printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
 			scanf("%d %d", &in.month, &in.day);
+			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+			rewind(stdin);
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
-				scanf("%d %d", &in.month, &in.day);
+				scanf("%d %d", &in.month, &in.day);				
 			}
 			
 			// 입력금액 확인을 입력받기위한 변수 select
@@ -112,6 +116,8 @@ int main() {
 			// 23.09.16 while문 조건을 금액입력 밑으로 옮김  by Lee
 				printf("금액 입력 : ");
 				scanf("%d", &in.money);
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				while (select != 1) {
 				printf("┌─ 확인─────────────────────────────┐\n");
 				printf("│  입력하신 금액은 %d원 입니다. ☜\n", in.money);
@@ -119,6 +125,8 @@ int main() {
 				printf("└───────────────────────────────────┘\n");
 				printf("  선택: ");
 				scanf("%d", &select);
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);	
 				// 입력값이 1일경우 입력받은 금액
 				if (select == 1) {
 					in.money;
@@ -126,6 +134,8 @@ int main() {
 				else if (select == 2) {
 					printf("금액을 다시 입력해 주세요 : ");
 					scanf("%d", &in.money);
+					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+					rewind(stdin);
 				}
 				else {
 					printf("잘못된 입력입니다.\n");
@@ -152,6 +162,8 @@ int main() {
 			out ou = { 0 };
 			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
 			scanf("%d %d", &ou.month, &ou.day);
+			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+			rewind(stdin);
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
@@ -165,7 +177,9 @@ int main() {
 			
 			printf("지출 금액 : ");
 			scanf("%d", &ou.money);
-			while (select != 0) {
+			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+			rewind(stdin);
+			while (select != 1) {
 				//  23.09.16 지출금액 확인 메세지 추가 by Lee
 				printf("┌─ 확인─────────────────────────────┐\n");
 				printf("│  입력하신 금액은 %d원 입니다. ☜\n", ou.money);
@@ -173,6 +187,8 @@ int main() {
 				printf("└───────────────────────────────────┘\n");
 				printf("  선택: ");
 				scanf("%d", &select);
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				// 입력값이 1일경우 입력받은 금액
 				if (select == 1) {
 					ou.money;
@@ -180,6 +196,8 @@ int main() {
 				else if (select == 2) {
 					printf("금액을 다시 입력해 주세요 : ");
 					scanf("%d", &ou.money);
+					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+					rewind(stdin);
 				}
 				else {
 					printf("잘못된 입력입니다.\n");
@@ -254,6 +272,8 @@ int main() {
 				int day = 0;
 				printf("궁금한 날을 입력해주세용 : ");
 				scanf("%d", &day);
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				// 딜레이 주기 23.09.16 by Lee
 				printf("내역 불러오는중......\n");
 				Sleep(2000);
@@ -264,6 +284,8 @@ int main() {
 					printf("다시 입력해 주세요.\n");
 					printf("궁금한 날을 다시 입력해주세용 : ");
 					scanf("%d", &day);
+					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+					rewind(stdin);
 				}
 
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
@@ -305,7 +327,7 @@ int main() {
 				printf("%d일 카드 총 사용 금액 : %d원\n", day, card);
 				printf("%d일 현금 총 사용 금액 : %d원\n", day, cash);
 				printf("%d일 총 수익 금액 : %d원\n", day, totalincome);
-				printf("%d일 총 총 지출 금액 : %d원\n", day, totalout);
+				printf("%d일 총 지출 금액 : %d원\n", day, totalout);
 				printf("%d일 총 합산 금액 : %d원\n", day, totalincome - totalout);
 				system("pause");
 			}
@@ -327,6 +349,8 @@ int main() {
 				int month = 0;
 				printf("몇 월 내역을 출력하시겠습니까? : ");
 				scanf("%d", &month);
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				// 딜레이 주기 23.09.16 by Lee
 				printf("내역 불러오는중......\n");
 				Sleep(2000);
@@ -337,6 +361,8 @@ int main() {
 					printf("다시 입력해 주세요.\n");
 					printf("몇 월 내역을 출력하시겠습니까? : ");
 					scanf("%d", &month);
+					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+					rewind(stdin);
 				}
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					if (month == in.month) {
