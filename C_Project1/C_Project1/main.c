@@ -35,7 +35,7 @@ int main() {
 	// 폰트색상 
 	font_color(LIGHT_GREEN);
 	title();
-	Sleep(2000);
+	Sleep(1000);
 	//_getch();
 	//타이틀 종료 시스템클리어
 	system("cls");
@@ -67,7 +67,8 @@ int main() {
 			// 총지출 = 총지출 + 구조체 income.money
 			totalout += ou.money;
 		}
-		
+		// 230918 goto문에서의 com 
+		com:
 		font_color(WHITE);
 		printf("총 수입 : %d원\n", totalincome);
 		font_color(RED);
@@ -87,19 +88,20 @@ int main() {
 		
 		// 메인메뉴 시작 
 		font_color(WHITE);
+		
 		switch (main_menu()) {
 			// 1번 수입 선택시
 		case 1: {
 			//구조체 income 에 변수 in 초기화
 			income in = { 0 };
 			// 230918 q, Q입력시 메인메뉴로 가기
-			char ch = 'q' || 'Q';
+			char ch;
 			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
 			printf("날짜 입력 ex 9/5 : ");
 			if (scanf("%d/%d", &in.month, &in.day)) {
 
 			}
-			else if (scanf(" %c", &ch)) {
+			else if (scanf("%c", &ch) && ch == 'q'|| ch=='Q') {
 				break;
 			}
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
@@ -107,12 +109,16 @@ int main() {
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 ex 9/5 : ");
-				scanf("%d/%d", &in.month, &in.day);				
+				scanf("%d/%d", &in.month, &in.day);
+				// 230918 while반복문 안에서 q누르면 탈출.
+				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
+					system("cls");
+					goto com;
+				}
+				rewind(stdin);
 			}
 			
 			// 입력금액 확인을 입력받기위한 변수 select
@@ -168,14 +174,14 @@ int main() {
 			// 230918 q, Q할시 메인메뉴로 돌아가기 
 			char ch = 'q' || 'Q';
 			out ou = { 0 };
+			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
 			printf("날짜 입력 ex 9/5 : ");
 			if (scanf("%d/%d", &ou.month, &ou.day)) {
-
+				
 			}
-			else if (scanf(" %c", &ch)) {
+			else if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
 				break;
 			}
-			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
 			
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
@@ -185,6 +191,12 @@ int main() {
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 ex 9/5 : ");
 				scanf("%d/%d", &ou.month, &ou.day);
+				// 230918 while반복문 안에서 q누르면 탈출.
+				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
+					system("cls");
+					goto com;
+				}
+				rewind(stdin);
 			}
 			// 금액확인 메세지 변수 선언
 			int select = 0;
