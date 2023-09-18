@@ -26,6 +26,7 @@ typedef enum {
 	LIGHT_GRAY	// 15
 } FONT_COLOR;
 
+void center();
 void title();
 void set_cursor_type(CURSOR_TYPE type);
 void font_color(FONT_COLOR color);
