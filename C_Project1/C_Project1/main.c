@@ -67,6 +67,7 @@ int main() {
 			// 총지출 = 총지출 + 구조체 income.money
 			totalout += ou.money;
 		}
+		
 		font_color(WHITE);
 		printf("총 수입 : %d원\n", totalincome);
 		font_color(RED);
@@ -91,8 +92,16 @@ int main() {
 		case 1: {
 			//구조체 income 에 변수 in 초기화
 			income in = { 0 };
-			printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
-			scanf("%d %d", &in.month, &in.day);
+			// 230918 q, Q입력시 메인메뉴로 가기
+			char ch = 'q' || 'Q';
+			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
+			printf("날짜 입력 ex 9/5 : ");
+			if (scanf("%d/%d", &in.month, &in.day)) {
+
+			}
+			else if (scanf(" %c", &ch)) {
+				break;
+			}
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
@@ -102,8 +111,8 @@ int main() {
 				rewind(stdin);
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
-				scanf("%d %d", &in.month, &in.day);				
+				printf("날짜 입력 ex 9/5 : ");
+				scanf("%d/%d", &in.month, &in.day);				
 			}
 			
 			// 입력금액 확인을 입력받기위한 변수 select
@@ -156,18 +165,26 @@ int main() {
 		}
 			  break;
 		case 2: {
+			// 230918 q, Q할시 메인메뉴로 돌아가기 
+			char ch = 'q' || 'Q';
 			out ou = { 0 };
-			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
-			scanf("%d %d", &ou.month, &ou.day);
+			printf("날짜 입력 ex 9/5 : ");
+			if (scanf("%d/%d", &ou.month, &ou.day)) {
+
+			}
+			else if (scanf(" %c", &ch)) {
+				break;
+			}
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
+			
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
-				scanf("%d %d", &ou.month, &ou.day);
+				printf("날짜 입력 ex 9/5 : ");
+				scanf("%d/%d", &ou.month, &ou.day);
 			}
 			// 금액확인 메세지 변수 선언
 			int select = 0;
@@ -227,7 +244,7 @@ int main() {
 			printf("메모 입력 (ex.주류비,통신비 등등): ");
 			scanf("%s", ou.memo);
 
-			// 결재 수단 메뉴 변수 선언
+			// 결재 수단 메뉴 변수 선언 
 			int submenu1 = import_menu();
 			if (submenu1 == 1) {
 				strcpy(ou.pay, "카드");
