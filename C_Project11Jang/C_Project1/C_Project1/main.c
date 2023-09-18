@@ -44,7 +44,7 @@ int main() {
 
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
-	//idc();
+
 
 	while (1) {
 		// 총 수입 변수 
@@ -158,27 +158,39 @@ int main() {
 			  break;
 		case 2: {
 			out ou = { 0 };
-			char ch = 0;
+			char ch = 'q ' || 'Q';
+			
 			printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
-			scanf("%d %d", &ou.month, &ou.day);
+			if (scanf("%d %d", &ou.month, &ou.day))
+			{
+
+			}
+			else if (scnaf("%c", &ch)) {
+				break;
+			}
+			
+			
+			
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
 
-			while(1){
+
+
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
-				while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
-					printf("잘못된 날짜 입력!\n");
-					printf("다시 입력해 주세요.\n");
-					printf("날짜 입력 (9월 5일 일시 ex.9 5): ");
-					scanf("%d %d", &ou.month, &ou.day);
-					if (ch == 'q' || ch == 'Q') {
-						printf("뒤로 갑니다.\n");
-						break;
-					}
-				}
+			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
+				
+				printf("잘못된 날짜 입력!\n");
+				printf("다시 입력해 주세요.\n");
+				printf("날짜 입력 (9월 5일 일시 ex.9/5): ");
+				
+				scanf("%d/%d", &ou.month, &ou.day);
+				rewind(stdin);
 
 			}
+
+
+
 			// 금액확인 메세지 변수 선언
 			int select = 0;
 
@@ -471,26 +483,36 @@ int main() {
 		{
 			char del;
 			printf("삭제하시겟습니까 Y/N\n");
-			scanf(" %c", &del);
+			while (1) {
+				scanf(" %c", &del);
+				rewind(stdin);
 
-			if (del == 'y' || del == 'Y') {
-				FILE* fp1 = fopen("income.bin", "wb");
-				FILE* fp2 = fopen("out.bin", "wb");
-				fclose(fp1);
-				fclose(fp2);
-				// 딜레이 주기 23.09.16 by Lee
-				printf("데이터 삭제중......\n");
-				Sleep(2000);
-				printf("삭제완료!\n");
-				// 23.09.16 by Lee
-				system("pause");
-			}
-			else if (del == 'n' || del == 'N') {
-				printf("삭제 취소 하셨습니다.");
-				// 추가 23.09.16 by Lee
-				system("pause");
-			}
+				if (del == 'y' || del == 'Y') {
+					FILE* fp1 = fopen("income.bin", "wb");
+					FILE* fp2 = fopen("out.bin", "wb");
+					fclose(fp1);
+					fclose(fp2);
+					// 딜레이 주기 23.09.16 by Lee
+					printf("데이터 삭제중......\n");
+					Sleep(2000);
+					printf("삭제완료!\n");
+					// 23.09.16 by Lee
+					system("pause");
+				}
+				else if (del == 'n' || del == 'N') {
+					printf("삭제 취소 하셨습니다.");
+					// 추가 23.09.16 by Lee
+					system("pause");
+				}
+				else
+				{
+					printf("다시 입력해주세요\n");
+					continue;
+				}
+				break;
 
+
+			}
 		}
 		break;
 		case 5:
