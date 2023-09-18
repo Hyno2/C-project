@@ -27,19 +27,16 @@ typedef struct _out {
 } out;
 
 int main() {
-	// 콘솔창 크기 조정 
-	HWND console = GetConsoleWindow();
-	RECT r;
-	GetWindowRect(console, &r);
-	MoveWindow(console, r.left, r.top, 500, 500, TRUE);
-
+	
+	center();
 	// 커서 없앰
 	set_cursor_type(NOCURSOR);
 
 	// 폰트색상 
 	font_color(LIGHT_GREEN);
 	title();
-	_getch();
+	Sleep(2000);
+	//_getch();
 	//타이틀 종료 시스템클리어
 	system("cls");
 	
@@ -461,29 +458,37 @@ int main() {
 			break;
 		case 4: // 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 
 				// 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
-			{
+		{
 			char del;
 			printf("삭제하시겟습니까 Y/N\n");
-			scanf(" %c", &del);
+			while (1) {
+				scanf(" %c", &del);
+				rewind(stdin);
 
-			if (del == 'y' || del == 'Y') {
-				FILE* fp1 = fopen("income.bin", "wb");
-				FILE* fp2 = fopen("out.bin", "wb");
-				fclose(fp1);
-				fclose(fp2);
-				// 딜레이 주기 23.09.16 by Lee
-				printf("데이터 삭제중......\n");
-				Sleep(2000);
-				printf("삭제완료!\n");
-				// 23.09.16 by Lee
-				system("pause");
+				if (del == 'y' || del == 'Y') {
+					FILE* fp1 = fopen("income.bin", "wb");
+					FILE* fp2 = fopen("out.bin", "wb");
+					fclose(fp1);
+					fclose(fp2);
+					// 딜레이 주기 23.09.16 by Lee
+					printf("데이터 삭제중......\n");
+					Sleep(2000);
+					printf("삭제완료!\n");
+					// 23.09.16 by Lee
+					system("pause");
+				}
+				else if (del == 'n' || del == 'N') {
+					printf("삭제 취소 하셨습니다.");
+					// 추가 23.09.16 by Lee
+					system("pause");
+				}
+				else {
+					printf("잘못된 입력!\n");
+					continue;
+				}
+				break;
 			}
-			else if (del == 'n' || del == 'N') {
-				printf("삭제 취소 하셨습니다.");
-				// 추가 23.09.16 by Lee
-				system("pause");
-			}
-			}
+		}
 			break;
 		case 5:
 			printf("프로그램을 종료합니다.\n");
