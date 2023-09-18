@@ -34,13 +34,13 @@ int main() {
 
 	// 폰트색상 
 	font_color(LIGHT_GREEN);
+	// 타이틀 함수 호출
 	title();
 	Sleep(1000);
 	//_getch();
 	//타이틀 종료 시스템클리어
 	system("cls");
-	
-	
+
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
 	//idc();
@@ -294,6 +294,24 @@ int main() {
 				FILE* fp1 = fopen("income.bin", "rb");
 				FILE* fp2 = fopen("out.bin", "rb");
 
+				// 230918 월 입력받기위한 변수 선언
+				int month = 0;
+				printf("월을 입력 해주세요.");
+				scanf("%d", &month);
+
+				// 230918 입력버퍼 비우기(무한루프 방지) 
+				rewind(stdin);
+				// 230918 month변수는 1~12까지만 받게끔 완료. 아닐시 재입력
+				while (month < 1 || month>12) {
+					printf("잘못된 날짜 입력!\n");
+					printf("다시 입력해 주세요.\n");
+					printf("월을 다시 입력해주세용 : ");
+					scanf("%d", &month);
+					// 230918 입력버퍼 비우기(무한루프 방지) 
+					rewind(stdin);
+				}
+
+
 				//일 입력받기위한 변수 선언
 				int day = 0;
 				printf("궁금한 날을 입력해주세용 : ");
@@ -315,9 +333,10 @@ int main() {
 				}
 
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
-					// 만약 입력받은날짜와 수입 구조체 변수 day 값이 같다면
-					if (day == in.day) {
+					// 만약 입력받은날짜와 수입 구조체 변수 month 변수 day 값이 같다면
+					if (month == in.month && day == in.day) {
 						totalincome += in.money;
+						printf("-----------------\n");
 						printf("수익내역 %d 번째\n", count++);
 						printf("날짜 : %d월 %d일\n", in.month, in.day);
 						printf("금액 : %d\n", in.money);
@@ -326,7 +345,8 @@ int main() {
 					}
 				}
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-					if (day == ou.day) {
+					// 만약 입력 받은 날짜와 지출 구조체 변수 month 변수 month값과 같고 day 값이 같다면
+					if (month == ou.month && day == ou.day) {
 						totalout += ou.money;
 						// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung 
 						if (strcmp(ou.pay, "카드") == 0) {    
@@ -336,6 +356,7 @@ int main() {
 						if (strcmp(ou.pay, "현금") == 0) {    
 							cash += ou.money;
 						}
+						printf("-----------------\n");
 						printf("지출내역 %d 번째\n", cnt++);
 						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
 						printf("금액 : %d원\n", ou.money);
@@ -350,11 +371,11 @@ int main() {
 
 				// 일별 조회 결과
 				// 230915 카드, 현금 총 사용금액 추가 by jung
-				printf("%d일 카드 총 사용 금액 : %d원\n", day, card);
-				printf("%d일 현금 총 사용 금액 : %d원\n", day, cash);
-				printf("%d일 총 수익 금액 : %d원\n", day, totalincome);
-				printf("%d일 총 지출 금액 : %d원\n", day, totalout);
-				printf("%d일 총 합산 금액 : %d원\n", day, totalincome - totalout);
+				printf("%d월 %d일 카드 총 사용 금액 : %d원\n", month, day, card);
+				printf("%d월 %d일 현금 총 사용 금액 : %d원\n", month, day, cash);
+				printf("%d월 %d일 총 수익 금액 : %d원\n", month, day, totalincome);
+				printf("%d월 %d일 총 지출 금액 : %d원\n", month, day, totalout);
+				printf("%d월 %d일 총 합산 금액 : %d원\n", month, day, totalincome - totalout);
 				system("pause");
 			}
 			// 월별 조회
