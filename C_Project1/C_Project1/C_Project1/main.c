@@ -27,23 +27,26 @@ typedef struct _out {
 } out;
 
 int main() {
-	// 콘솔창이 모니터 중앙으로
+
+	// 콘솔 실행 창 크기 및 화면 중앙 실행.
 	center();
+
 	// 커서 없앰
 	set_cursor_type(NOCURSOR);
 
 	// 폰트색상 
 	font_color(LIGHT_GREEN);
-	// 타이틀 함수 호출
 	title();
-	Sleep(1000);
 	//_getch();
+	
+	// 타이틀 딜레이후 넘어가기
+	Sleep(1000);
+
 	//타이틀 종료 시스템클리어
 	system("cls");
 
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
-	
 	
 	while (1) {
 		// 총 수입 변수 
@@ -55,8 +58,8 @@ int main() {
 		//구조체 out에 변수 ou 초기화
 		out ou = { 0 };
 
-	// 메인메뉴 위에 내역들 띄우기
-		//파일 읽기
+		// 메인메뉴 위에 내역들 띄우기
+			//파일 읽기
 		FILE* fp1 = fopen("income.bin", "rb");
 		FILE* fp2 = fopen("out.bin", "rb");
 		while (fread(&in, sizeof(income), 1, fp1) > 0) {
@@ -67,8 +70,6 @@ int main() {
 			// 총지출 = 총지출 + 구조체 income.money
 			totalout += ou.money;
 		}
-		// 230918 goto문에서의 com 
-		com:
 		font_color(WHITE);
 		printf("총 수입 : %d원\n", totalincome);
 		font_color(RED);
@@ -85,52 +86,39 @@ int main() {
 			font_color(RED);
 			printf("현재 자산 : %d원\n", totalincome - totalout);
 		}
-		
+
 		// 메인메뉴 시작 
 		font_color(WHITE);
-		
 		switch (main_menu()) {
 			// 1번 수입 선택시
-		case MAIN_INCOME : {
+		case 1: {
 			//구조체 income 에 변수 in 초기화
 			income in = { 0 };
-			// 230918 q, Q입력시 메인메뉴로 가기 변수 선언
-			char ch;
-			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
 			printf("날짜 입력 ex 9/5 : ");
-			if (scanf("%d/%d", &in.month, &in.day)) {
-
-			}
-			else if (scanf("%c", &ch) && ch == 'q'|| ch=='Q') {
-				break;
-			}
+			scanf("%d/%d", &in.month, &in.day);
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
+				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+				rewind(stdin);
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 ex 9/5 : ");
 				scanf("%d/%d", &in.month, &in.day);
-				// 230918 while반복문 안에서 q누르면 탈출.
-				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
-					system("cls");
-					goto com;
-				}
-				rewind(stdin);
 			}
-			
+
 			// 입력금액 확인을 입력받기위한 변수 select
 			int select = 0;
 
 			// 확인 메세지 추가 
 			// 23.09.16 while문 조건을 금액입력 밑으로 옮김  by Lee
-				printf("금액 입력 : ");
-				scanf("%d", &in.money);
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);
-				while (select != 1) {
+			printf("금액 입력 : ");
+			scanf("%d", &in.money);
+			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
+			rewind(stdin);
+			while (select != 1) {
 				printf("┌─ 확인─────────────────────────────┐\n");
 				printf("│  입력하신 금액은 %d원 입니다. ☜\n", in.money);
 				printf("│\t\t(1.예  2.아니오)    │\n");
@@ -138,7 +126,7 @@ int main() {
 				printf("  선택: ");
 				scanf("%d", &select);
 				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);	
+				rewind(stdin);
 				// 입력값이 1일경우 입력받은 금액
 				if (select == 1) {
 					in.money;
@@ -170,37 +158,31 @@ int main() {
 			system("pause");
 		}
 			  break;
-		case MAIN_IMPORT : {
-			// 230918 q, Q할시 메인메뉴로 돌아가기 
-			char ch = 'q' || 'Q';
+		case 2: {
 			out ou = { 0 };
-			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
+			char ch = 'q' || 'Q';
 			printf("날짜 입력 ex 9/5 : ");
 			if (scanf("%d/%d", &ou.month, &ou.day)) {
-				
+			
 			}
-			else if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
+			else if (scanf(" %c", &ch)) {
 				break;
 			}
+			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
-			
+
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
-			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
-				printf("잘못된 날짜 입력!\n");
-				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 ex 9/5 : ");
-				scanf("%d/%d", &ou.month, &ou.day);
-				// 230918 while반복문 안에서 q누르면 탈출.
-				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
-					system("cls");
-					goto com;
-				}
-				rewind(stdin);
+				while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
+					printf("잘못된 날짜 입력!\n");
+					printf("다시 입력해 주세요.\n");
+					printf("날짜 입력 ex 9/5 : ");
+					scanf("%d/%d", &ou.month, &ou.day);
+
 			}
 			// 금액확인 메세지 변수 선언
 			int select = 0;
-			
+
 			printf("지출 금액 : ");
 			scanf("%d", &ou.money);
 			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
@@ -256,7 +238,7 @@ int main() {
 			printf("메모 입력 (ex.주류비,통신비 등등): ");
 			scanf("%s", ou.memo);
 
-			// 결재 수단 메뉴 변수 선언 
+			// 결재 수단 메뉴 변수 선언
 			int submenu1 = import_menu();
 			if (submenu1 == 1) {
 				strcpy(ou.pay, "카드");
@@ -274,7 +256,7 @@ int main() {
 			system("pause");
 		}
 			  break;
-		case MAIN_CHECK :
+		case 3:
 			system("cls");
 			int submenu2 = check_menu();
 
@@ -285,32 +267,14 @@ int main() {
 				int totalincome = 0;
 				int totalout = 0;
 				// 230915 카드변수 추가 by jung
-				int card = 0; 
+				int card = 0;
 				// 230915 현금변수 추가 by jung
-				int cash = 0; 
+				int cash = 0;
 				income in = { 0 };
 				out ou = { 0 };
 
 				FILE* fp1 = fopen("income.bin", "rb");
 				FILE* fp2 = fopen("out.bin", "rb");
-
-				// 230918 월 입력받기위한 변수 선언
-				int month = 0;
-				printf("월을 입력 해주세요.");
-				scanf("%d", &month);
-
-				// 230918 입력버퍼 비우기(무한루프 방지) 
-				rewind(stdin);
-				// 230918 month변수는 1~12까지만 받게끔 완료. 아닐시 재입력
-				while (month < 1 || month>12) {
-					printf("잘못된 날짜 입력!\n");
-					printf("다시 입력해 주세요.\n");
-					printf("월을 다시 입력해주세용 : ");
-					scanf("%d", &month);
-					// 230918 입력버퍼 비우기(무한루프 방지) 
-					rewind(stdin);
-				}
-
 
 				//일 입력받기위한 변수 선언
 				int day = 0;
@@ -333,10 +297,9 @@ int main() {
 				}
 
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
-					// 만약 입력받은날짜와 수입 구조체 변수 month 변수 day 값이 같다면
-					if (month == in.month && day == in.day) {
+					// 만약 입력받은날짜와 수입 구조체 변수 day 값이 같다면
+					if (day == in.day) {
 						totalincome += in.money;
-						printf("-----------------\n");
 						printf("수익내역 %d 번째\n", count++);
 						printf("날짜 : %d월 %d일\n", in.month, in.day);
 						printf("금액 : %d\n", in.money);
@@ -345,18 +308,16 @@ int main() {
 					}
 				}
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-					// 만약 입력 받은 날짜와 지출 구조체 변수 month 변수 month값과 같고 day 값이 같다면
-					if (month == ou.month && day == ou.day) {
+					if (day == ou.day) {
 						totalout += ou.money;
 						// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung 
-						if (strcmp(ou.pay, "카드") == 0) {    
+						if (strcmp(ou.pay, "카드") == 0) {
 							card += ou.money;
 						}
 						// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "현금") == 0) {    
+						if (strcmp(ou.pay, "현금") == 0) {
 							cash += ou.money;
 						}
-						printf("-----------------\n");
 						printf("지출내역 %d 번째\n", cnt++);
 						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
 						printf("금액 : %d원\n", ou.money);
@@ -371,11 +332,11 @@ int main() {
 
 				// 일별 조회 결과
 				// 230915 카드, 현금 총 사용금액 추가 by jung
-				printf("%d월 %d일 카드 총 사용 금액 : %d원\n", month, day, card);
-				printf("%d월 %d일 현금 총 사용 금액 : %d원\n", month, day, cash);
-				printf("%d월 %d일 총 수익 금액 : %d원\n", month, day, totalincome);
-				printf("%d월 %d일 총 지출 금액 : %d원\n", month, day, totalout);
-				printf("%d월 %d일 총 합산 금액 : %d원\n", month, day, totalincome - totalout);
+				printf("%d일 카드 총 사용 금액 : %d원\n", day, card);
+				printf("%d일 현금 총 사용 금액 : %d원\n", day, cash);
+				printf("%d일 총 수익 금액 : %d원\n", day, totalincome);
+				printf("%d일 총 지출 금액 : %d원\n", day, totalout);
+				printf("%d일 총 합산 금액 : %d원\n", day, totalincome - totalout);
 				system("pause");
 			}
 			// 월별 조회
@@ -387,10 +348,10 @@ int main() {
 				// 230915 카드변수 추가 by jung
 				int card = 0;
 				// 230915 현금변수 추가 by jung
-				int cash = 0; 
+				int cash = 0;
 				income in = { 0 };
 				out ou = { 0 };
-				
+
 				FILE* fp1 = fopen("income.bin", "rb");
 				FILE* fp2 = fopen("out.bin", "rb");
 				int month = 0;
@@ -403,7 +364,7 @@ int main() {
 				Sleep(2000);
 
 				// 230914 month변수는 1~12까지만 받게끔 완료. by jung
-				while (month < 1 || month > 12 ) {
+				while (month < 1 || month > 12) {
 					printf("잘못된 날짜 입력!\n");
 					printf("다시 입력해 주세요.\n");
 					printf("몇 월 내역을 출력하시겠습니까? : ");
@@ -425,11 +386,11 @@ int main() {
 					if (month == ou.month) {
 						totalout += ou.money;
 						// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "카드") == 0) {     
+						if (strcmp(ou.pay, "카드") == 0) {
 							card += ou.money;
 						}
 						// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "현금") == 0) {    
+						if (strcmp(ou.pay, "현금") == 0) {
 							cash += ou.money;
 						}
 						printf("지출내역 %d 번째\n", cnt++);
@@ -450,7 +411,7 @@ int main() {
 				printf("%d월 총 합산 금액 : %d원\n", month, totalincome - totalout);
 				system("pause");
 			}
-			
+
 			// 전체 내역 조회
 			if (submenu2 == 3) {
 				int count = 1;
@@ -458,9 +419,9 @@ int main() {
 				int totalincome = 0;
 				int totalout = 0;
 				// 230915 카드변수 추가 by jung
-				int card = 0; 
+				int card = 0;
 				// 230915 현금변수 추가 by jung
-				int cash = 0; 
+				int cash = 0;
 				income in = { 0 };
 				out ou = { 0 };
 				// 딜레이 주기 23.09.16 by Lee
@@ -480,11 +441,11 @@ int main() {
 				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 					totalout += ou.money;
 					// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung
-					if (strcmp(ou.pay, "카드") == 0) {     
+					if (strcmp(ou.pay, "카드") == 0) {
 						card += ou.money;
 					}
 					// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-					if (strcmp(ou.pay, "현금") == 0) {    
+					if (strcmp(ou.pay, "현금") == 0) {
 						cash += ou.money;
 					}
 					printf("지출내역 %d 번째\n", cnt++);
@@ -506,11 +467,13 @@ int main() {
 				system("pause");
 			}
 			break;
-		case MAIN_DELETE : // 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 
-				// 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
+		case 4: // 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 
+			// 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
 		{
 			char del;
 			printf("삭제하시겟습니까 Y/N\n");
+
+			// 230918 다시 입력 하세요 while ,else문 오류 추가
 			while (1) {
 				scanf(" %c", &del);
 				rewind(stdin);
@@ -528,23 +491,23 @@ int main() {
 					system("pause");
 				}
 				else if (del == 'n' || del == 'N') {
-					printf("삭제 취소 하셨습니다.");
+					printf("삭제 취소 하셨습니다.\n");
 					// 추가 23.09.16 by Lee
 					system("pause");
 				}
 				else {
-					printf("잘못된 입력!\n");
+					printf("다시 입력 해주세요.\n");
 					continue;
 				}
 				break;
 			}
 		}
-			break;
-		case MAIN_EXIT :
+		break;
+		case 5:
 			printf("프로그램을 종료합니다.\n");
 			printf("부자 되세요~");
 			exit(0);
-			}
+		}
 		system("cls");
 	}
 }
