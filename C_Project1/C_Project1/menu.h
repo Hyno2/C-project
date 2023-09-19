@@ -6,11 +6,12 @@
 				// ~~~ #endif
 typedef enum {
 	MAIN_INCOME = 1,	// 수입 메뉴
-	MAIN_IMPORT,		// 지출 메뉴
+	MAIN_SPEND,			// 지출 메뉴
 	MAIN_CHECK,			// 조회 메뉴
 	MAIN_DELETE,		// 삭제 메뉴
 	MAIN_EXIT			// 종료
 } MAIN_MENU;
+
 
 extern int main_menu();// extern은 생략가능
 extern int import_menu(); 

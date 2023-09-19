@@ -1,6 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include "menu.h"
+
+
 int menuInput(int start, int end)
 {
 	int menu;
@@ -103,3 +105,4 @@ int check_menu()
 //	return menu;
 	return menuInput(1, 4);
 }
+

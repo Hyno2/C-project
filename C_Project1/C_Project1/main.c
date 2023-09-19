@@ -7,105 +7,65 @@
 #include <windows.h>// Sleep()
 #include "menu.h"
 #include "ui.h"
+#include "file.h"
+#include "func.h"
 
-// 구조체 수입 income 선언
-typedef struct _income {
-	int month;
-	int day;
-	int money;
-	char memo[50];
-} income;
 
-// 구조체 지출 out 선언
-typedef struct _out {
-	int month;
-	int day;
-	int money;
-	char type[20];
-	char pay[20];
-	char memo[50];
-} out;
 
 int main() {
 	// 콘솔창이 모니터 중앙으로
 	center();
 	// 커서 없앰
 	set_cursor_type(NOCURSOR);
-
 	// 폰트색상 
 	font_color(LIGHT_GREEN);
 	// 타이틀 함수 호출
 	title();
+	// 딜레이 1초
 	Sleep(1000);
-	//_getch();
 	//타이틀 종료 시스템클리어
 	system("cls");
-
 	font_color(LIGHT_GRAY);
 	set_cursor_type(NORMAL_CURSOR);
-	
+
+	// 파일명 매개변수로 던져 주기 위한 선언
+	char file_in[]= "income.bin";
+	char file_sp[] = "out.bin";
 	
 	while (1) {
+
 		// 총 수입 변수 
 		int totalincome = 0;
 		// 총 지출 변수
 		int totalout = 0;
-		//구조체 income 에 변수 in 초기화
-		income in = { 0 };
-		//구조체 out에 변수 ou 초기화
-		out ou = { 0 };
 
-	// 메인메뉴 위에 내역들 띄우기
-		//파일 읽기
-		FILE* fp1 = fopen("income.bin", "rb");
-		FILE* fp2 = fopen("out.bin", "rb");
-		while (fread(&in, sizeof(income), 1, fp1) > 0) {
-			// 총수입 = 총수입 + 구조체 income.money
-			totalincome += in.money;
-		}
-		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-			// 총지출 = 총지출 + 구조체 income.money
-			totalout += ou.money;
-		}
-		// 230918 goto문에서의 com 
+		// goto문 돌아가는 위치
 		com:
+
+		// 타이틀 위에 총수입 총지출 현자산 츨력하는 함수 호출
+		show_total_money(file_in,file_sp, totalincome, totalout);
 		font_color(WHITE);
-		printf("총 수입 : %d원\n", totalincome);
-		font_color(RED);
-		printf("총 지출 : %d원\n", totalout);
-		// 만약 총수입 - 총지출 0보다 클시
-		//-폰트는 초록색, 현재 자산 출력
-		if (totalincome - totalout > 0) {
-			font_color(GREEN);
-			printf("현재 자산 : %d원\n", totalincome - totalout);
-		}
-		// 아니고 0이거나 작을시 
-		//-폰트 빨강, 현재 자산출력
-		else if (totalincome - totalout <= 0) {
-			font_color(RED);
-			printf("현재 자산 : %d원\n", totalincome - totalout);
-		}
-		
+
 		// 메인메뉴 시작 
-		font_color(WHITE);
-		
 		switch (main_menu()) {
-			// 1번 수입 선택시
-		case MAIN_INCOME : {
-			//구조체 income 에 변수 in 초기화
+
+		// 1번 수입
+		case MAIN_INCOME : 
+		{
+			//구조체 income 에 변수 in 선언,초기화
 			income in = { 0 };
+
 			// 230918 q, Q입력시 메인메뉴로 가기 변수 선언
 			char ch;
+
 			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
 			printf("날짜 입력 ex 9/5 : ");
-			if (scanf("%d/%d", &in.month, &in.day)) {
-
-			}
+			if (scanf("%d/%d", &in.month, &in.day)) {}
 			else if (scanf("%c", &ch) && ch == 'q'|| ch=='Q') {
 				break;
 			}
-			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
+
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
@@ -113,69 +73,61 @@ int main() {
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 ex 9/5 : ");
 				scanf("%d/%d", &in.month, &in.day);
-				// 230918 while반복문 안에서 q누르면 탈출.
-				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
-					system("cls");
-					goto com;
-				}
-				rewind(stdin);
+
+			// 230918 while반복문 안에서 q누르면 탈출.
+			if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
+				system("cls");
+				goto com;	
+			}	rewind(stdin);
 			}
-			
+						
+			printf("금액 입력 : ");
+			scanf("%d", &in.money);
+			rewind(stdin);
+
 			// 입력금액 확인을 입력받기위한 변수 select
 			int select = 0;
 
-			// 확인 메세지 추가 
-			// 23.09.16 while문 조건을 금액입력 밑으로 옮김  by Lee
-				printf("금액 입력 : ");
-				scanf("%d", &in.money);
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);
-				while (select != 1) {
-				printf("┌─ 확인─────────────────────────────┐\n");
-				printf("│  입력하신 금액은 %d원 입니다. ☜\n", in.money);
-				printf("│\t\t(1.예  2.아니오)    │\n");
-				printf("└───────────────────────────────────┘\n");
-				printf("  선택: ");
-				scanf("%d", &select);
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);	
+			// 금액입력확인메세지 함수 호출
+			check_input_msg(in,select);
+
+			while (1) {
+			scanf("%d", &select);
+			rewind(stdin);
 				// 입력값이 1일경우 입력받은 금액
 				if (select == 1) {
 					in.money;
+					break;
 				}// 2일경우 다시입력 받기
 				else if (select == 2) {
 					printf("금액을 다시 입력해 주세요 : ");
 					scanf("%d", &in.money);
-					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 					rewind(stdin);
+					break;
 				}
 				else {
 					printf("잘못된 입력입니다.\n");
-					printf("다시 입력해주세요\n");
+					printf("다시 입력해주세요. ");
 				}
 			}
-			//메모 입력 
+			// 메모 입력 
 			printf("메모 입력 : ");
 			scanf("%s", in.memo);
-
-			// 파일오픈 income.bin에 이어서저장 ab
-			FILE* fp = fopen("income.bin", "ab");
-			// fwrite 변수in내용을 income구조체크기만큼 한덩어리 쓴다
-			fwrite(&in, sizeof(income), 1, fp);
-			fclose(fp);
+		
+			// 수입 파일 쓰기
+			file_write_income(file_in,in);
 			printf("수입내역 저장중......\n");
-			// 23.09.16 딜레이 준다 1000이 1sec   by Lee
 			Sleep(2000);
 			printf("저장 완료!\n");
 			system("pause");
-		}
-			  break;
-		case MAIN_IMPORT : {
-			// 230918 q, Q할시 메인메뉴로 돌아가기 
-			char ch = 'q' || 'Q';
+		}  break;
+
+		case MAIN_SPEND : {
+			char ch;
 			out ou = { 0 };
 			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
 			printf("날짜 입력 ex 9/5 : ");
+
 			if (scanf("%d/%d", &ou.month, &ou.day)) {
 				
 			}
@@ -183,20 +135,15 @@ int main() {
 				break;
 			}
 			rewind(stdin);
+
+			// 오류메세지 이후에 q 디버깅후 확인해야함
+			spend_error_msg(ou);
+
 			
-			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
-			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
-			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
-				printf("잘못된 날짜 입력!\n");
-				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 ex 9/5 : ");
-				scanf("%d/%d", &ou.month, &ou.day);
-				// 230918 while반복문 안에서 q누르면 탈출.
-				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
-					system("cls");
-					goto com;
-				}
+			if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
 				rewind(stdin);
+				//system("cls");
+				goto com;
 			}
 			// 금액확인 메세지 변수 선언
 			int select = 0;
@@ -291,9 +238,6 @@ int main() {
 				income in = { 0 };
 				out ou = { 0 };
 
-				FILE* fp1 = fopen("income.bin", "rb");
-				FILE* fp2 = fopen("out.bin", "rb");
-
 				// 230918 월 입력받기위한 변수 선언
 				int month = 0;
 				printf("월을 입력 해주세요.");
@@ -331,6 +275,8 @@ int main() {
 					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 					rewind(stdin);
 				}
+				FILE* fp1 = fopen("income.bin", "rb");
+				FILE* fp2 = fopen("out.bin", "rb");
 
 				while (fread(&in, sizeof(income), 1, fp1) > 0) {
 					// 만약 입력받은날짜와 수입 구조체 변수 month 변수 day 값이 같다면

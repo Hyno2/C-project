@@ -129,12 +129,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="file.c" />
+    <ClCompile Include="func.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="ui.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file.h" />
+    <ClInclude Include="func.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="ui.h" />
   </ItemGroup>
