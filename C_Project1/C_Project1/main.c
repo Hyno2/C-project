@@ -58,8 +58,8 @@ int main() {
 			// 230918 q, Q입력시 메인메뉴로 가기 변수 선언
 			char ch;
 
-			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
-			printf("날짜 입력 ex 9/5 : ");
+			printf(" 메인메뉴로 돌아가시려면 (q or Q)\n");
+			printf(" ▶ 날짜 입력 ex 9/5 : ");
 			if (scanf("%d/%d", &in.month, &in.day)) {}
 			else if (scanf("%c", &ch) && ch == 'q'|| ch=='Q') {
 				break;
@@ -69,9 +69,9 @@ int main() {
 			// 230914 month변수는 1~12까지 , day변수는 1~31까지만 받게끔 완료. 
 			// month는 1미만 13이상이거나 day는 1미만 32미만일때 오류메세지 다시입력받기
 			while (in.month < 1 || in.month >= 13 || in.day < 1 || in.day >= 32) {
-				printf("잘못된 날짜 입력!\n");
-				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 ex 9/5 : ");
+				printf(" 잘못된 날짜 입력!\n");
+				printf(" 다시 입력해 주세요.\n");
+				printf(" ▶ 날짜 입력 ex 9/5 : ");
 				scanf("%d/%d", &in.month, &in.day);
 
 			// 230918 while반복문 안에서 q누르면 탈출.
@@ -81,7 +81,7 @@ int main() {
 			}	rewind(stdin);
 			}
 						
-			printf("금액 입력 : ");
+			printf(" ▶ 금액 입력 : ");
 			scanf("%d", &in.money);
 			rewind(stdin);
 
@@ -100,25 +100,28 @@ int main() {
 					break;
 				}// 2일경우 다시입력 받기
 				else if (select == 2) {
-					printf("금액을 다시 입력해 주세요 : ");
+					printf(" 금액을 다시 입력해 주세요 : ");
 					scanf("%d", &in.money);
 					rewind(stdin);
 					break;
 				}
 				else {
-					printf("잘못된 입력입니다.\n");
-					printf("다시 입력해주세요. ");
+					printf(" 잘못된 입력입니다.\n");
+					printf(" 다시 입력해주세요. ");
 				}
 			}
 			// 메모 입력 
-			printf("메모 입력 : ");
+			printf(" ▶ 메모 입력 : ");
 			scanf("%s", in.memo);
 		
 			// 수입 파일 쓰기 함수 호출
 			file_write_income(file_in,in);
-			printf("수입내역 저장중......\n");
-			Sleep(2000);
-			printf("저장 완료!\n");
+			printf(" 수입내역 저장중");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".\n");
+			Sleep(400);
+			printf(" 저장 완료!\n");
 			system("pause");
 		}  break;
 
@@ -127,24 +130,26 @@ int main() {
 		{
 			char ch;
 			out ou = { 0 };
-			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
-			printf("날짜 입력 ex 9/5 : ");
+			printf(" 메인메뉴로 돌아가시려면 (q or Q)\n");
+			printf(" ▶ 날짜 입력 ex 9/5 : ");
 			if (scanf("%d/%d", &ou.month, &ou.day)) {}
 			else if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
 				break;
 			}rewind(stdin);
 		
 			while (ou.month < 1 || ou.month >= 13 || ou.day < 1 || ou.day >= 32) {
-				printf("잘못된 날짜 입력!\n");
-				printf("다시 입력해 주세요.\n");
-				printf("날짜 입력 ex 9/5 : ");
+				printf(" 잘못된 날짜 입력!\n");
+				printf(" 다시 입력해 주세요.\n");
+				printf(" ▶ 날짜 입력 ex 9/5 : ");
 				scanf("%d/%d", &ou.month, &ou.day);
-					if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
-						rewind(stdin);
-						goto com;
-					}
+
+				// 230918 while반복문 안에서 q누르면 탈출.
+				if (scanf("%c", &ch) && ch == 'q' || ch == 'Q') {
+					system("cls");
+					goto com;
+				}	rewind(stdin);
 			}
-			printf("지출 금액 : ");
+			printf(" ▶ 지출 금액 : ");
 			scanf("%d", &ou.money);			
 			rewind(stdin);
 
@@ -163,32 +168,63 @@ int main() {
 					break;
 				}
 				else if (select == 2) {
-					printf("금액을 다시 입력해 주세요 : ");
+					printf(" 금액을 다시 입력해 주세요 : ");
 					scanf("%d", &ou.money);
 					rewind(stdin);
 					break;
 				}
 				else {
-					printf("잘못된 입력입니다.\n");
-					printf("다시 입력해주세요. ");
+					printf(" 잘못된 입력입니다.\n");
+					printf(" 다시 입력해주세요. ");
 				}
 			}
 			// 지출 카테고리 함수 호출 
 			// 작동 안됌 오류 발견 빈칸이 들어감!
-			spend_catagory(ou);
+			// 카테고리 메뉴 함수 변수에 선언
+			int submenu0 = type_menu();
+			if (submenu0 == 1) {
+				strcpy(ou.type, "식비");
+			}
+			else if (submenu0 == 2) {
+				strcpy(ou.type, "주거 / 통신");
+			}
+			else if (submenu0 == 3) {
+				strcpy(ou.type, "의복 / 미용");
+			}
+			else if (submenu0 == 4) {
+				strcpy(ou.type, "건강 / 문화");
+			}
+			else if (submenu0 == 5) {
+				strcpy(ou.type, "교육 / 육아");
+			}
+			else if (submenu0 == 6) {
+				strcpy(ou.type, "교통 / 차량");
+			}
+			else if (submenu0 == 7) {
+				strcpy(ou.type, "기타");
+			}
 			
 			// 메모입력
-			printf("메모 입력 (ex.주류비,통신비 등등): ");
+			printf(" ▶ 메모 입력 : ");
 			scanf("%s", ou.memo);
 
 			// 결재 수단 메뉴 함수 호출 
 			// 작동안됌 오류 발견 빈칸이들어감
-			pay_method(ou);
+			int submenu1 = import_menu();
+			if (submenu1 == 1) {
+				strcpy(ou.pay, "카드");
+			}
+			else if (submenu1 == 2) {
+				strcpy(ou.pay, "현금");
+			}
 
 			// 지출 파일 쓰기 함수 호출
 			file_write_spend(file_sp, ou);
-			printf("지출내역 저장중......\n");
-			Sleep(2000);
+			printf(" 지출내역 저장중");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".\n");
+			Sleep(400);
 			printf("저장 완료!\n");
 			system("pause");
 		}  break;
@@ -196,15 +232,19 @@ int main() {
 		// 3번 조회 
 		case MAIN_CHECK :
 		{
+			// 조회 메뉴 함수호출
 			system("cls");
+			int submenu2 = check_menu();
+			
+
 			// 일 조회 함수 호출
-			day_check(file_in, file_sp);
+			day_check(submenu2, file_in, file_sp);
 
 			// 월 조회 함수 호출
-			month_check(file_in, file_sp);
+			month_check(submenu2, file_in, file_sp);
 
 			// 전체 내역 조회 함수 호출
-			all_check(file_in, file_sp);
+			all_check(submenu2, file_in, file_sp);
 		} break;
 
 		// 4번 삭제

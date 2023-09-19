@@ -6,14 +6,30 @@
 
 void title()
 {
-	printf("           (\\____/)\n");
-	printf("           / @__@ \\\n");
-	printf("          (  (oo)  )\n");
-	printf("           `-.~~.-'\n");
-	printf("            /    \\\n");
-	printf("          @/      \\@\n");
-	printf("         (/ /    \\ \\)\n");
-	printf("          WW      WW\n");
+	printf("\t\t\t\t         v1.0\n");
+	printf("\n");
+	printf("\n");
+	printf("\n");
+	font_color(LIGHT_RED);
+	printf("\t         (\\____/)\n");
+	printf("\t         / @__@ \\\n");
+	printf("\t        (  (oo)  )\n");
+	printf("\t         `-.~~.-'\n");
+	printf("\t          /    \\\n");
+	printf("\t        @/      \\@\n");
+	printf("\t       (/ /    \\ \\)\n");
+	printf("\t        WW      WW\n");
+	printf("\n");
+	printf("\n");
+	font_color(WHITE);
+	printf("\t        로딩중");
+	Sleep(400); printf(". ");
+	Sleep(400); printf(". ");
+	Sleep(400); printf(". ");
+	printf("\n");
+	printf("\n");
+	Sleep(1000);
+	printf("\t         로딩완료!");
 }
 
 void set_cursor_type(CURSOR_TYPE type)

@@ -18,7 +18,7 @@ void check_input_msg(income in) {
 	printf("│  입력하신 금액은 %d원 입니다. ☜\n", in.money);
 	printf("│\t\t(1.예  2.아니오)    │\n");
 	printf("└───────────────────────────────────┘\n");
-	printf("  선택: ");
+	printf(" ▶ 선택: ");
 }
 
 void check_input_msg2(out ou) {
@@ -27,51 +27,22 @@ void check_input_msg2(out ou) {
 	printf("│  입력하신 금액은 %d원 입니다. ☜\n", ou.money);
 	printf("│\t\t(1.예  2.아니오)    │\n");
 	printf("└───────────────────────────────────┘\n");
-	printf("  선택: ");
+	printf(" ▶ 선택: ");
 	
 }
 
 char spend_catagory(out ou) { // 오류 스트링카피가 리턴이안됌
-	// 카테고리 메뉴 함수 변수에 선언
-	int submenu0 = type_menu();
-	if (submenu0 == 1) {
-		strcpy(ou.type, "식비");
-	}
-	else if (submenu0 == 2) {
-		strcpy(ou.type, "주거 / 통신");
-	}
-	else if (submenu0 == 3) {
-		strcpy(ou.type, "의복 / 미용");
-	}
-	else if (submenu0 == 4) {
-		strcpy(ou.type, "건강 / 문화");
-	}
-	else if (submenu0 == 5) {
-		strcpy(ou.type, "교육 / 육아");
-	}
-	else if (submenu0 == 6) {
-		strcpy(ou.type, "교통 / 차량");
-	}
-	else if (submenu0 == 7) {
-		strcpy(ou.type, "기타");
-	}
-	return ou.type;
+	
+	
 }
 
 void pay_method(out ou) { // 오류
-	int submenu1 = import_menu();
-	if (submenu1 == 1) {
-		strcpy(ou.pay, "카드");
-	}
-	else if (submenu1 == 2) {
-		strcpy(ou.pay, "현금");
-	}
+	
 }
 
-void day_check(char file1[],char file2[]) {
+void day_check(int submenu2,char file1[],char file2[]) {
 
-	// 조회 메뉴 함수호출
-	int submenu2 = check_menu();
+	
 	// 일별 조회  여기서 월 먼저 입력받고 입력받은 달의 일수만 표시하게 해야 할듯 
 	if (submenu2 == 1) {
 		int count = 1;
@@ -86,31 +57,34 @@ void day_check(char file1[],char file2[]) {
 		// 230918 월 입력받기위한 변수 선언
 		int month = 0;
 
-		printf("월을 입력 해주세요.");
+		printf(" ▶ 월을 입력 해주세요 : ");
 		scanf("%d", &month);
 
 		rewind(stdin);
 		// 230918 month변수는 1~12까지만 받게끔 완료. 아닐시 재입력
 		while (month < 1 || month>12) {
-			printf("잘못된 날짜 입력!\n");
-			printf("다시 입력해 주세요.\n");
-			printf("월을 다시 입력해주세용 : ");
+			printf(" 잘못된 날짜 입력!\n");
+			printf(" 다시 입력해 주세요.\n");
+			printf(" ▶ 월을 다시 입력해주세용 : ");
 			scanf("%d", &month);
 			rewind(stdin);
 		}
 		//일 입력받기위한 변수 선언
 		int day = 0;
 
-		printf("궁금한 날을 입력해주세용 : ");
+		printf(" ▶ 궁금한 날을 입력해주세용 : ");
 		scanf("%d", &day);
 		rewind(stdin);
-		printf("내역 불러오는중......\n");
-		Sleep(2000);
+		printf(" 내역 불러오는중");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".\n");
+		Sleep(400);
 
 		while (day < 1 || day>31) {
-			printf("잘못된 날짜 입력!\n");
-			printf("다시 입력해 주세요.\n");
-			printf("궁금한 날을 다시 입력해주세용 : ");
+			printf(" 잘못된 날짜 입력!\n");
+			printf(" 다시 입력해 주세요.\n");
+			printf(" ▶ 궁금한 날을 다시 입력해주세용 : ");
 			scanf("%d", &day);
 			rewind(stdin);
 		}
@@ -121,12 +95,11 @@ void day_check(char file1[],char file2[]) {
 			// 만약 입력받은날짜와 수입 구조체 변수 month 변수 day 값이 같다면
 			if (month == in.month && day == in.day) {
 				totalincome += in.money;
-				printf("-----------------\n");
-				printf("수익내역 %d 번째\n", count++);
-				printf("날짜 : %d월 %d일\n", in.month, in.day);
-				printf("금액 : %d\n", in.money);
-				printf("메모 : %s\n", in.memo);
-				printf("-----------------\n");
+				printf("───────────────────────\n");
+				printf(" 수익내역 %d 번째\n", count++);
+				printf(" 날짜 : %d월 %d일\n", in.month, in.day);
+				printf(" 금액 : %d\n", in.money);
+				printf(" 메모 : %s\n", in.memo);
 			}
 		}
 		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
@@ -141,14 +114,13 @@ void day_check(char file1[],char file2[]) {
 				if (strcmp(ou.pay, "현금") == 0) {
 					cash += ou.money;
 				}
-				printf("-----------------\n");
-				printf("지출내역 %d 번째\n", cnt++);
-				printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-				printf("금액 : %d원\n", ou.money);
-				printf("타입 : %s\n", ou.type);
-				printf("메모 : %s\n", ou.memo);
-				printf("결제수단 : %s\n", ou.pay);
-				printf("-----------------\n");
+				printf("───────────────────────\n");
+				printf(" 지출내역 %d 번째\n", cnt++);
+				printf(" 날짜 : %d월 %d일\n", ou.month, ou.day);
+				printf(" 금액 : %d원\n", ou.money);
+				printf(" 타입 : %s\n", ou.type);
+				printf(" 메모 : %s\n", ou.memo);
+				printf(" 결제수단 : %s\n", ou.pay);
 			}
 		}
 		fclose(fp1);
@@ -156,19 +128,19 @@ void day_check(char file1[],char file2[]) {
 
 		// 일별 조회 결과
 		// 230915 카드, 현금 총 사용금액 추가 by jung
-		printf("%d월 %d일 카드 총 사용 금액 : %d원\n", month, day, card);
-		printf("%d월 %d일 현금 총 사용 금액 : %d원\n", month, day, cash);
-		printf("%d월 %d일 총 수익 금액 : %d원\n", month, day, totalincome);
-		printf("%d월 %d일 총 지출 금액 : %d원\n", month, day, totalout);
-		printf("%d월 %d일 총 합산 금액 : %d원\n", month, day, totalincome - totalout);
+		printf("────────────────────────────────────\n");
+		printf(" %d월 %d일 카드 총 사용 금액 : %d원\n", month, day, card);
+		printf(" %d월 %d일 현금 총 사용 금액 : %d원\n", month, day, cash);
+		printf(" %d월 %d일 총 수익 금액 : %d원\n", month, day, totalincome);
+		printf(" %d월 %d일 총 지출 금액 : %d원\n", month, day, totalout);
+		printf(" %d월 %d일 총 합산 금액 : %d원\n", month, day, totalincome - totalout);
 		system("pause");
 	}
 }
 
-void month_check(char file1[], char file2[]) {
+void month_check(int submenu2, char file1[], char file2[]) {
 
-	// 조회 메뉴 함수호출
-	int submenu2 = check_menu();
+	
 	// 월별 조회
 	if (submenu2 == 2) {
 		int count = 1;
@@ -185,31 +157,34 @@ void month_check(char file1[], char file2[]) {
 		FILE* fp1 = fopen(file1, "rb");
 		FILE* fp2 = fopen(file2, "rb");
 		int month = 0;
-		printf("몇 월 내역을 출력하시겠습니까? : ");
+		printf(" ▶ 몇 월 내역을 출력하시겠습니까? : ");
 		scanf("%d", &month);
 		// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 		rewind(stdin);
 		// 딜레이 주기 23.09.16 by Lee
-		printf("내역 불러오는중......\n");
-		Sleep(2000);
+		printf(" 내역 불러오는중");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".\n");
+		Sleep(400);
 
 		// 230914 month변수는 1~12까지만 받게끔 완료. by jung
 		while (month < 1 || month > 12) {
-			printf("잘못된 날짜 입력!\n");
-			printf("다시 입력해 주세요.\n");
-			printf("몇 월 내역을 출력하시겠습니까? : ");
+			printf(" 잘못된 날짜 입력!\n");
+			printf(" 다시 입력해 주세요.\n");
+			printf(" ▶ 몇 월 내역을 출력하시겠습니까? : ");
 			scanf("%d", &month);
-			// 230916 입력버퍼 비우기(무한루프 방지) by Jung
 			rewind(stdin);
 		}
 		while (fread(&in, sizeof(income), 1, fp1) > 0) {
 			if (month == in.month) {
 				totalincome += in.money;
-				printf("수익내역 %d 번째\n", count++);
-				printf("날짜 : %d월 %d일\n", in.month, in.day);
-				printf("금액 : %d\n", in.money);
-				printf("메모 : %s\n", in.memo);
-				printf("-----------------\n");
+				printf("───────────────────────\n");
+				printf(" 수익내역 %d 번째\n", count++);
+				printf(" 날짜 : %d월 %d일\n", in.month, in.day);
+				printf(" 금액 : %d\n", in.money);
+				printf(" 메모 : %s\n", in.memo);
+				
 			}
 		}
 		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
@@ -223,30 +198,30 @@ void month_check(char file1[], char file2[]) {
 				if (strcmp(ou.pay, "현금") == 0) {
 					cash += ou.money;
 				}
-				printf("지출내역 %d 번째\n", cnt++);
-				printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-				printf("금액 : %d원\n", ou.money);
-				printf("타입 : %s\n", ou.type);
-				printf("메모 : %s\n", ou.memo);
-				printf("결제수단 : %s\n", ou.pay);
-				printf("-----------------\n");
+				printf("───────────────────────\n");
+				printf(" 지출내역 %d 번째\n", cnt++);
+				printf(" 날짜 : %d월 %d일\n", ou.month, ou.day);
+				printf(" 금액 : %d원\n", ou.money);
+				printf(" 타입 : %s\n", ou.type);
+				printf(" 메모 : %s\n", ou.memo);
+				printf(" 결제수단 : %s\n", ou.pay);
 			}
 		}
 		fclose(fp1);
 		fclose(fp2);
-		printf("%d월 카드 총 사용금액 : %d원\n", month, card);
-		printf("%d월 현금 총 사용금액 : %d원\n", month, cash);
-		printf("%d월 총 수익 금액: %d원\n", month, totalincome);
-		printf("%d월 총 지출 금액 : %d원\n", month, totalout);
-		printf("%d월 총 합산 금액 : %d원\n", month, totalincome - totalout);
+		printf("────────────────────────────────────\n");
+		printf(" %d월 카드 총 사용금액 : %d원\n", month, card);
+		printf(" %d월 현금 총 사용금액 : %d원\n", month, cash);
+		printf(" %d월 총 수익 금액: %d원\n", month, totalincome);
+		printf(" %d월 총 지출 금액 : %d원\n", month, totalout);
+		printf(" %d월 총 합산 금액 : %d원\n", month, totalincome - totalout);
 		system("pause");
 	}
 }
 
-void all_check(char file1[], char file2[]) {
+void all_check(int submenu2, char file1[], char file2[]) {
 
-	// 조회 메뉴 함수호출
-	int submenu2 = check_menu();
+	
 
 	// 전체 내역 조회
 	if (submenu2 == 3) {
@@ -258,18 +233,20 @@ void all_check(char file1[], char file2[]) {
 		int cash = 0;
 		income in = { 0 };
 		out ou = { 0 };
-		printf("내역 불러오는중......\n");
-		Sleep(2000);
+		printf(" 내역 불러오는중");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".");
+		Sleep(400); printf(".\n");
+		Sleep(400);
 		FILE* fp1 = fopen(file1, "rb");
 		FILE* fp2 = fopen(file2, "rb");
 		while (fread(&in, sizeof(income), 1, fp1) > 0) {
 			totalincome += in.money;
-
-			printf("수익내역 %d 번째\n", count++);
-			printf("날짜 : %d월 %d일\n", in.month, in.day);
-			printf("금액 : %d원\n", in.money);
-			printf("메모 : %s\n", in.memo);
-			printf("-----------------\n");
+			printf("───────────────────────\n");
+			printf(" 수익내역 %d 번째\n", count++);
+			printf(" 날짜 : %d월 %d일\n", in.month, in.day);
+			printf(" 금액 : %d원\n", in.money);
+			printf(" 메모 : %s\n", in.memo);
 		}
 		while (fread(&ou, sizeof(out), 1, fp2) > 0) {
 			totalout += ou.money;
@@ -279,28 +256,29 @@ void all_check(char file1[], char file2[]) {
 			if (strcmp(ou.pay, "현금") == 0) {
 				cash += ou.money;
 			}
-			printf("지출내역 %d 번째\n", cnt++);
-			printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-			printf("금액 : %d원\n", ou.money);
-			printf("타입 : %s\n", ou.type);
-			printf("메모 : %s\n", ou.memo);
-			printf("결제수단 : %s\n", ou.pay);
-			printf("-----------------\n");
+			printf("───────────────────────\n");
+			printf(" 지출내역 %d 번째\n", cnt++);
+			printf(" 날짜 : %d월 %d일\n", ou.month, ou.day);
+			printf(" 금액 : %d원\n", ou.money);
+			printf(" 타입 : %s\n", ou.type);
+			printf(" 메모 : %s\n", ou.memo);
+			printf(" 결제수단 : %s\n", ou.pay);
 		}
 		fclose(fp1);
 		fclose(fp2);
-		printf("카드 총 사용 금액: %d원\n", card);
-		printf("현금 총 사용 금액: %d원\n", cash);
-		printf("총 수익 금액: %d원\n", totalincome);
-		printf("총 지출 금액: %d원\n", totalout);
-		printf("총 합산 금액: %d원\n", totalincome - totalout);
+		printf("────────────────────────────────────\n");
+		printf(" 카드 총 사용 금액: %d원\n", card);
+		printf(" 현금 총 사용 금액: %d원\n", cash);
+		printf(" 총 수익 금액: %d원\n", totalincome);
+		printf(" 총 지출 금액: %d원\n", totalout);
+		printf(" 총 합산 금액: %d원\n", totalincome - totalout);
 		system("pause");
 	}
 }
 
 void delete_all(char file1[],char file2[]) {
 	char del;
-	printf("삭제하시겟습니까 Y/N\n");
+	printf(" ▶ 삭제하시겟습니까 Y/N : ");
 	while (1) {
 		scanf(" %c", &del);
 		rewind(stdin);
@@ -310,17 +288,21 @@ void delete_all(char file1[],char file2[]) {
 			fclose(fp1);
 			fclose(fp2);
 
-			printf("데이터 삭제중......\n");
-			Sleep(2000);
-			printf("삭제완료!\n");
+			printf("데이터 삭제중");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".");
+			Sleep(400); printf(".\n");
+			Sleep(400);
+			printf(" 삭제완료!\n");
 			system("pause");
 		}
 		else if (del == 'n' || del == 'N') {
-			printf("삭제 취소 하셨습니다.");
+			printf(" 삭제 취소 하셨습니다.\n");
 			system("pause");
 		}
 		else {
-			printf("잘못된 입력!\n");
+			printf(" 잘못된 입력!\n");
+			printf(" 다시 입력해 주세요 : ");
 			continue;
 		}
 		break;
