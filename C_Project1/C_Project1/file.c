@@ -17,6 +17,12 @@ void file_write_income(char file1[],income in) {
 	fwrite(&in, sizeof(income), 1, fp);
 	fclose(fp);
 }
+
+void file_write_spend(char file2[], out ou) {
+	FILE* fp = fopen(file2, "ab");
+	fwrite(&ou, sizeof(out), 1, fp);
+	fclose(fp);
+}
 void show_total_money(char file1[], char file2[], int totalincome, int totalspend)
 {
 	//파일 읽기

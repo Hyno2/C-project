@@ -22,3 +22,4 @@ typedef struct _out {
 
 void show_total_money(char file1[], char file2[], int totalincome, int totalspend);
 void file_write_income(char file1[], income in);
+void file_write_spend(char file2[], out ou);
