@@ -43,10 +43,10 @@ void show_total_money(char file1[], char file2[], int totalincome, int totalspen
 	}
 	fclose(fp1);
 	fclose(fp2);
-	// 230918 goto문에서의 com 
 
 	font_color(WHITE);
 	printf("총 수입 : %d원\n", totalincome);
+
 	font_color(RED);
 	printf("총 지출 : %d원\n", totalspend);
 

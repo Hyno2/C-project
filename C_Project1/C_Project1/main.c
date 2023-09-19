@@ -123,7 +123,8 @@ int main() {
 		}  break;
 
 		// 2번 지출
-		case MAIN_SPEND : {
+		case MAIN_SPEND :
+		{
 			char ch;
 			out ou = { 0 };
 			printf("메인메뉴로 돌아가시려면 (q or Q)\n");
@@ -172,19 +173,20 @@ int main() {
 					printf("다시 입력해주세요. ");
 				}
 			}
-			// 지출 카테고리 함수 호출
+			// 지출 카테고리 함수 호출 
+			// 작동 안됌 오류 발견 빈칸이 들어감!
 			spend_catagory(ou);
 			
 			// 메모입력
 			printf("메모 입력 (ex.주류비,통신비 등등): ");
 			scanf("%s", ou.memo);
 
-			// 결재 수단 메뉴 함수 호출
+			// 결재 수단 메뉴 함수 호출 
+			// 작동안됌 오류 발견 빈칸이들어감
 			pay_method(ou);
 
 			// 지출 파일 쓰기 함수 호출
 			file_write_spend(file_sp, ou);
-
 			printf("지출내역 저장중......\n");
 			Sleep(2000);
 			printf("저장 완료!\n");
@@ -193,277 +195,34 @@ int main() {
 			
 		// 3번 조회 
 		case MAIN_CHECK :
-			system("cls");
-			int submenu2 = check_menu();
-
-			// 일별 조회  여기서 월 먼저 입력받고 입력받은 달의 일수만 표시하게 해야 할듯 
-			if (submenu2 == 1) {
-				int count = 1;
-				int cnt = 1;
-				int totalincome = 0;
-				int totalout = 0;
-				// 230915 카드변수 추가 by jung
-				int card = 0; 
-				// 230915 현금변수 추가 by jung
-				int cash = 0; 
-				income in = { 0 };
-				out ou = { 0 };
-
-				// 230918 월 입력받기위한 변수 선언
-				int month = 0;
-				printf("월을 입력 해주세요.");
-				scanf("%d", &month);
-
-				// 230918 입력버퍼 비우기(무한루프 방지) 
-				rewind(stdin);
-				// 230918 month변수는 1~12까지만 받게끔 완료. 아닐시 재입력
-				while (month < 1 || month>12) {
-					printf("잘못된 날짜 입력!\n");
-					printf("다시 입력해 주세요.\n");
-					printf("월을 다시 입력해주세용 : ");
-					scanf("%d", &month);
-					// 230918 입력버퍼 비우기(무한루프 방지) 
-					rewind(stdin);
-				}
-
-
-				//일 입력받기위한 변수 선언
-				int day = 0;
-				printf("궁금한 날을 입력해주세용 : ");
-				scanf("%d", &day);
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);
-				// 딜레이 주기 23.09.16 by Lee
-				printf("내역 불러오는중......\n");
-				Sleep(2000);
-
-				// 230914 day변수는 1~31까지만 받게끔 완료. 아닐시 재입력 by jung
-				while (day < 1 || day>31) {
-					printf("잘못된 날짜 입력!\n");
-					printf("다시 입력해 주세요.\n");
-					printf("궁금한 날을 다시 입력해주세용 : ");
-					scanf("%d", &day);
-					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-					rewind(stdin);
-				}
-				FILE* fp1 = fopen("income.bin", "rb");
-				FILE* fp2 = fopen("out.bin", "rb");
-
-				while (fread(&in, sizeof(income), 1, fp1) > 0) {
-					// 만약 입력받은날짜와 수입 구조체 변수 month 변수 day 값이 같다면
-					if (month == in.month && day == in.day) {
-						totalincome += in.money;
-						printf("-----------------\n");
-						printf("수익내역 %d 번째\n", count++);
-						printf("날짜 : %d월 %d일\n", in.month, in.day);
-						printf("금액 : %d\n", in.money);
-						printf("메모 : %s\n", in.memo);
-						printf("-----------------\n");
-					}
-				}
-				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-					// 만약 입력 받은 날짜와 지출 구조체 변수 month 변수 month값과 같고 day 값이 같다면
-					if (month == ou.month && day == ou.day) {
-						totalout += ou.money;
-						// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung 
-						if (strcmp(ou.pay, "카드") == 0) {    
-							card += ou.money;
-						}
-						// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "현금") == 0) {    
-							cash += ou.money;
-						}
-						printf("-----------------\n");
-						printf("지출내역 %d 번째\n", cnt++);
-						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-						printf("금액 : %d원\n", ou.money);
-						printf("타입 : %s\n", ou.type);
-						printf("메모 : %s\n", ou.memo);
-						printf("결제수단 : %s\n", ou.pay);
-						printf("-----------------\n");
-					}
-				}
-				fclose(fp1);
-				fclose(fp2);
-
-				// 일별 조회 결과
-				// 230915 카드, 현금 총 사용금액 추가 by jung
-				printf("%d월 %d일 카드 총 사용 금액 : %d원\n", month, day, card);
-				printf("%d월 %d일 현금 총 사용 금액 : %d원\n", month, day, cash);
-				printf("%d월 %d일 총 수익 금액 : %d원\n", month, day, totalincome);
-				printf("%d월 %d일 총 지출 금액 : %d원\n", month, day, totalout);
-				printf("%d월 %d일 총 합산 금액 : %d원\n", month, day, totalincome - totalout);
-				system("pause");
-			}
-			// 월별 조회
-			if (submenu2 == 2) {
-				int count = 1;
-				int cnt = 1;
-				int totalincome = 0;
-				int totalout = 0;
-				// 230915 카드변수 추가 by jung
-				int card = 0;
-				// 230915 현금변수 추가 by jung
-				int cash = 0; 
-				income in = { 0 };
-				out ou = { 0 };
-				
-				FILE* fp1 = fopen("income.bin", "rb");
-				FILE* fp2 = fopen("out.bin", "rb");
-				int month = 0;
-				printf("몇 월 내역을 출력하시겠습니까? : ");
-				scanf("%d", &month);
-				// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-				rewind(stdin);
-				// 딜레이 주기 23.09.16 by Lee
-				printf("내역 불러오는중......\n");
-				Sleep(2000);
-
-				// 230914 month변수는 1~12까지만 받게끔 완료. by jung
-				while (month < 1 || month > 12 ) {
-					printf("잘못된 날짜 입력!\n");
-					printf("다시 입력해 주세요.\n");
-					printf("몇 월 내역을 출력하시겠습니까? : ");
-					scanf("%d", &month);
-					// 230916 입력버퍼 비우기(무한루프 방지) by Jung
-					rewind(stdin);
-				}
-				while (fread(&in, sizeof(income), 1, fp1) > 0) {
-					if (month == in.month) {
-						totalincome += in.money;
-						printf("수익내역 %d 번째\n", count++);
-						printf("날짜 : %d월 %d일\n", in.month, in.day);
-						printf("금액 : %d\n", in.money);
-						printf("메모 : %s\n", in.memo);
-						printf("-----------------\n");
-					}
-				}
-				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-					if (month == ou.month) {
-						totalout += ou.money;
-						// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "카드") == 0) {     
-							card += ou.money;
-						}
-						// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-						if (strcmp(ou.pay, "현금") == 0) {    
-							cash += ou.money;
-						}
-						printf("지출내역 %d 번째\n", cnt++);
-						printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-						printf("금액 : %d원\n", ou.money);
-						printf("타입 : %s\n", ou.type);
-						printf("메모 : %s\n", ou.memo);
-						printf("결제수단 : %s\n", ou.pay);
-						printf("-----------------\n");
-					}
-				}
-				fclose(fp1);
-				fclose(fp2);
-				printf("%d월 카드 총 사용금액 : %d원\n", month, card);
-				printf("%d월 현금 총 사용금액 : %d원\n", month, cash);
-				printf("%d월 총 수익 금액: %d원\n", month, totalincome);
-				printf("%d월 총 지출 금액 : %d원\n", month, totalout);
-				printf("%d월 총 합산 금액 : %d원\n", month, totalincome - totalout);
-				system("pause");
-			}
-			
-			// 전체 내역 조회
-			if (submenu2 == 3) {
-				int count = 1;
-				int cnt = 1;
-				int totalincome = 0;
-				int totalout = 0;
-				// 230915 카드변수 추가 by jung
-				int card = 0; 
-				// 230915 현금변수 추가 by jung
-				int cash = 0; 
-				income in = { 0 };
-				out ou = { 0 };
-				// 딜레이 주기 23.09.16 by Lee
-				printf("내역 불러오는중......\n");
-				Sleep(2000);
-				FILE* fp1 = fopen("income.bin", "rb");
-				FILE* fp2 = fopen("out.bin", "rb");
-				while (fread(&in, sizeof(income), 1, fp1) > 0) {
-					totalincome += in.money;
-
-					printf("수익내역 %d 번째\n", count++);
-					printf("날짜 : %d월 %d일\n", in.month, in.day);
-					printf("금액 : %d원\n", in.money);
-					printf("메모 : %s\n", in.memo);
-					printf("-----------------\n");
-				}
-				while (fread(&ou, sizeof(out), 1, fp2) > 0) {
-					totalout += ou.money;
-					// 230915 지불방식이 카드인 경우 card변수에 ou.money 값 누적 합산 by jung
-					if (strcmp(ou.pay, "카드") == 0) {     
-						card += ou.money;
-					}
-					// 230915 지불방식이 현금인 경우 cash변수에 ou.money 값 누적 합산 by jung
-					if (strcmp(ou.pay, "현금") == 0) {    
-						cash += ou.money;
-					}
-					printf("지출내역 %d 번째\n", cnt++);
-					printf("날짜 : %d월 %d일\n", ou.month, ou.day);
-					printf("금액 : %d원\n", ou.money);
-					printf("타입 : %s\n", ou.type);
-					printf("메모 : %s\n", ou.memo);
-					printf("결제수단 : %s\n", ou.pay);
-					printf("-----------------\n");
-				}
-				fclose(fp1);
-				fclose(fp2);
-				// 230915 카드, 현금 총 사용금액 추가 by jung
-				printf("카드 총 사용 금액: %d원\n", card);
-				printf("현금 총 사용 금액: %d원\n", cash);
-				printf("총 수익 금액: %d원\n", totalincome);
-				printf("총 지출 금액: %d원\n", totalout);
-				printf("총 합산 금액: %d원\n", totalincome - totalout);
-				system("pause");
-			}
-			break;
-		case MAIN_DELETE : // 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 
-				// 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
 		{
-			char del;
-			printf("삭제하시겟습니까 Y/N\n");
-			while (1) {
-				scanf(" %c", &del);
-				rewind(stdin);
+			system("cls");
+			// 일 조회 함수 호출
+			day_check(file_in, file_sp);
 
-				if (del == 'y' || del == 'Y') {
-					FILE* fp1 = fopen("income.bin", "wb");
-					FILE* fp2 = fopen("out.bin", "wb");
-					fclose(fp1);
-					fclose(fp2);
-					// 딜레이 주기 23.09.16 by Lee
-					printf("데이터 삭제중......\n");
-					Sleep(2000);
-					printf("삭제완료!\n");
-					// 23.09.16 by Lee
-					system("pause");
-				}
-				else if (del == 'n' || del == 'N') {
-					printf("삭제 취소 하셨습니다.");
-					// 추가 23.09.16 by Lee
-					system("pause");
-				}
-				else {
-					printf("잘못된 입력!\n");
-					continue;
-				}
-				break;
-			}
-		}
-			break;
+			// 월 조회 함수 호출
+			month_check(file_in, file_sp);
+
+			// 전체 내역 조회 함수 호출
+			all_check(file_in, file_sp);
+		} break;
+
+		// 4번 삭제
+		case MAIN_DELETE :	// 서브메뉴 더 받아서 전체내역 삭제할지, 검색해서 삭제?? , 				
+		{					// 아니면 수익내역만 삭제 , 지출내역만 삭제 이런거 해도될듯
+			delete_all(file_in,file_sp);
+		}break;
+
 		case MAIN_EXIT :
+		{
 			printf("프로그램을 종료합니다.\n");
 			printf("부자 되세요~");
 			exit(0);
-			}
+		}
+			} // switch 문 닫는 중괄호
 		system("cls");
-	}
-}
+	} // while문 닫는 중괄호
+
+} // main문 닫는 중괄호
 
 
