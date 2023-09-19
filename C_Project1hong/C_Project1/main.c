@@ -102,7 +102,7 @@ int main() {
 				printf("잘못된 날짜 입력!\n");
 				printf("다시 입력해 주세요.\n");
 				printf("날짜 입력 (9월 5일 일시 ex.9 5) : ");
-				scanf("%d %d", &in.month, &in.day);
+				scanf("%d/ %d", &in.month, &in.day);
 			}
 			
 			// 입력금액 확인을 입력받기위한 변수 select
