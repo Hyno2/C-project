@@ -10,8 +10,6 @@
 #include "file.h"
 #include "func.h"
 
-
-
 int main() {
 	// 콘솔창이 모니터 중앙으로
 	center();
@@ -89,9 +87,9 @@ int main() {
 			int select = 0;
 
 			// 금액입력확인메세지 함수 호출
-			check_input_msg(in);
-
 			while (1) {
+			check_input_msg(in);
+			
 			scanf("%d", &select);
 			rewind(stdin);
 				// 입력값이 1일경우 입력받은 금액
@@ -103,7 +101,7 @@ int main() {
 					printf(" 금액을 다시 입력해 주세요 : ");
 					scanf("%d", &in.money);
 					rewind(stdin);
-					break;
+					continue;
 				}
 				else {
 					printf(" 잘못된 입력입니다.\n");
@@ -157,10 +155,10 @@ int main() {
 			int select = 0;
 
 			// 금액입력확인메세지 함수 호출
+			while (1) {
 			check_input_msg2(ou);
 
 			// 조건 체크
-			while (1) {
 				scanf("%d", &select);
 				rewind(stdin);
 				if (select == 1) {
@@ -171,7 +169,7 @@ int main() {
 					printf(" 금액을 다시 입력해 주세요 : ");
 					scanf("%d", &ou.money);
 					rewind(stdin);
-					break;
+					continue;
 				}
 				else {
 					printf(" 잘못된 입력입니다.\n");
@@ -234,8 +232,7 @@ int main() {
 		{
 			// 조회 메뉴 함수호출
 			system("cls");
-			int submenu2 = check_menu();
-			
+			int submenu2 = check_menu();	
 
 			// 일 조회 함수 호출
 			day_check(submenu2, file_in, file_sp);
