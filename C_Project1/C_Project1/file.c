@@ -23,6 +23,7 @@ void file_write_spend(char file2[], out ou) {
 	fwrite(&ou, sizeof(out), 1, fp);
 	fclose(fp);
 }
+
 void show_total_money(char file1[], char file2[], int totalincome, int totalspend)
 {
 	//파일 읽기

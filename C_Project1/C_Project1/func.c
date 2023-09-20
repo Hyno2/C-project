@@ -10,8 +10,6 @@
 #include "file.h"
 #include "func.h"
 
-
-
 void check_input_msg(income in) {
 
 	printf("┌─ 확인─────────────────────────────┐\n");
@@ -33,7 +31,6 @@ void check_input_msg2(out ou) {
 
 char spend_catagory(out ou) { // 오류 스트링카피가 리턴이안됌
 	
-	
 }
 
 void pay_method(out ou) { // 오류
@@ -41,8 +38,6 @@ void pay_method(out ou) { // 오류
 }
 
 void day_check(int submenu2,char file1[],char file2[]) {
-
-	
 	// 일별 조회  여기서 월 먼저 입력받고 입력받은 달의 일수만 표시하게 해야 할듯 
 	if (submenu2 == 1) {
 		int count = 1;
@@ -65,14 +60,14 @@ void day_check(int submenu2,char file1[],char file2[]) {
 		while (month < 1 || month>12) {
 			printf(" 잘못된 날짜 입력!\n");
 			printf(" 다시 입력해 주세요.\n");
-			printf(" ▶ 월을 다시 입력해주세용 : ");
+			printf(" ▶ 월을 다시 입력해주세요 : ");
 			scanf("%d", &month);
 			rewind(stdin);
 		}
 		//일 입력받기위한 변수 선언
 		int day = 0;
 
-		printf(" ▶ 궁금한 날을 입력해주세용 : ");
+		printf(" ▶ 궁금한 날을 입력해주세요 : ");
 		scanf("%d", &day);
 		rewind(stdin);
 		printf(" 내역 불러오는중");
@@ -84,7 +79,7 @@ void day_check(int submenu2,char file1[],char file2[]) {
 		while (day < 1 || day>31) {
 			printf(" 잘못된 날짜 입력!\n");
 			printf(" 다시 입력해 주세요.\n");
-			printf(" ▶ 궁금한 날을 다시 입력해주세용 : ");
+			printf(" ▶ 궁금한 날을 다시 입력해주세요 : ");
 			scanf("%d", &day);
 			rewind(stdin);
 		}
@@ -139,8 +134,6 @@ void day_check(int submenu2,char file1[],char file2[]) {
 }
 
 void month_check(int submenu2, char file1[], char file2[]) {
-
-	
 	// 월별 조회
 	if (submenu2 == 2) {
 		int count = 1;
@@ -220,9 +213,6 @@ void month_check(int submenu2, char file1[], char file2[]) {
 }
 
 void all_check(int submenu2, char file1[], char file2[]) {
-
-	
-
 	// 전체 내역 조회
 	if (submenu2 == 3) {
 		int count = 1;
@@ -278,7 +268,12 @@ void all_check(int submenu2, char file1[], char file2[]) {
 
 void delete_all(char file1[],char file2[]) {
 	char del;
-	printf(" ▶ 삭제하시겟습니까 Y/N : ");
+	printf("┌─ 경고!─────────────────────┐\n");
+	printf("│                            │\n");
+	printf("│  모든 데이터가 지워집니다. │\n");
+	printf("│                            │\n");
+	printf("└────────────────────────────┘\n");
+	printf(" ▶ 삭제 하시겠습니까 Y/N : ");
 	while (1) {
 		scanf(" %c", &del);
 		rewind(stdin);
