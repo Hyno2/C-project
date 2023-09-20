@@ -31,7 +31,6 @@ int main() {
 	char file_sp[] = "out.bin";
 	
 	while (1) {
-
 		// 총 수입 변수 
 		int totalincome = 0;
 		// 총 지출 변수

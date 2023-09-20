@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include "menu.h"
 
-
 int menuInput(int start, int end)
 {
 	int menu;
@@ -13,7 +12,7 @@ int menuInput(int start, int end)
 		{
 			// 입력 버퍼 비우기 
 			rewind(stdin);
-			printf(" 다시 입력해주세요.");
+			printf(" 다시 입력해주세요.\n");
 			scanf("%d", &menu);
 			continue;
 		}
@@ -22,6 +21,7 @@ int menuInput(int start, int end)
 	}
 	return menu;
 }
+
 void printMenu()
 {
 	printf("┌────────────────────────────┐\n");
@@ -35,6 +35,7 @@ void printMenu()
 	printf("└────────────────────────────┘\n");
 	printf(" ▶ 메뉴 선택 : ");
 }
+
 int main_menu()
 {
 	printMenu();
