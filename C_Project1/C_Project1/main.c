@@ -11,6 +11,8 @@
 #include "func.h"
 
 int main() {
+	// 콘솔창 제목표시줄 내용바꾸기
+	SetConsoleTitle(TEXT("가.계.부 v1.0"));
 	// 콘솔창이 모니터 중앙으로
 	center();
 	// 커서 없앰
@@ -104,7 +106,7 @@ int main() {
 				}
 				else {
 					printf(" 잘못된 입력입니다.\n");
-					printf(" 다시 입력해주세요. ");
+					printf(" 다시 입력해주세요.\n");
 				}
 			}
 			// 메모 입력 
@@ -172,7 +174,7 @@ int main() {
 				}
 				else {
 					printf(" 잘못된 입력입니다.\n");
-					printf(" 다시 입력해주세요. ");
+					printf(" 다시 입력해주세요.\n");
 				}
 			}
 			// 지출 카테고리 함수 호출 
@@ -222,7 +224,7 @@ int main() {
 			Sleep(400); printf(".");
 			Sleep(400); printf(".\n");
 			Sleep(400);
-			printf("저장 완료!\n");
+			printf(" 저장 완료!\n");
 			system("pause");
 		}  break;
 			
@@ -251,8 +253,8 @@ int main() {
 
 		case MAIN_EXIT :
 		{
-			printf("프로그램을 종료합니다.\n");
-			printf("부자 되세요~");
+			printf(" 프로그램을 종료합니다.\n");
+			printf(" 부자 되세요~");
 			exit(0);
 		}
 			} // switch 문 닫는 중괄호
