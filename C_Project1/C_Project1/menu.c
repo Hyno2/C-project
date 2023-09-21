@@ -12,7 +12,7 @@ int menuInput(int start, int end)
 		{
 			// 입력 버퍼 비우기 
 			rewind(stdin);
-			printf(" 다시 입력해주세요.\n");
+			printf(" 다시 입력해주세요 : ");
 			scanf("%d", &menu);
 			continue;
 		}

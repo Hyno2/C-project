@@ -283,7 +283,7 @@ void delete_all(char file1[],char file2[]) {
 			fclose(fp1);
 			fclose(fp2);
 
-			printf("데이터 삭제중");
+			printf(" 데이터 삭제중");
 			Sleep(400); printf(".");
 			Sleep(400); printf(".");
 			Sleep(400); printf(".\n");
