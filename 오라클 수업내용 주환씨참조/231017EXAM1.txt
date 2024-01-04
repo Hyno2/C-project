@@ -1,0 +1,74 @@
+231017 EXAM 1
+-- TEACHER 테이블 생성 : 이름(기본키) 소속 경력 담당
+CREATE TABLE TEACHER (
+    NAME VARCHAR2(20) PRIMARY KEY,
+    COMPANY VARCHAR2(20),
+    YEAR INT,
+    MAJOR VARCHAR2(20)
+);
+
+-- STUDENT 테이블 생성 : 학번(기본키) 이름 나이 담당교사
+--  (STUDENT.담당교사 -> TEACHER.이름 참조하도록 설정)
+CREATE TABLE STUDENT(
+    HAK_BUN VARCHAR2(20) PRIMARY KEY,
+    NAME VARCHAR2(20),
+    AGE INT,
+    PRO VARCHAR2(20)
+);
+-- 외래키 설정
+ALTER TABLE STUDENT ADD CONSTRAINT FK_CODE FOREIGN KEY(PRO) REFERENCES TEACHER(NAME);
+DROP TABLE TEACHER;
+
+-- 프로시저 사용해서 데이터추가
+-- STUDENT 테이블에 10개 데이터 임의추가
+EXEC ADD_STUDENT('001','이현오',32,'이동준');
+EXEC ADD_STUDENT('002','장광수',32,'이동준');
+EXEC ADD_STUDENT('003','정인혁',30,'이유나');
+EXEC ADD_STUDENT('004','홍주환',30,'정제원');
+EXEC ADD_STUDENT('005','이순신',40,'박준현');
+EXEC ADD_STUDENT('006','박지영',24,'이유나');
+EXEC ADD_STUDENT('007','임기철',40,'정제원');
+EXEC ADD_STUDENT('008','강대한',29,'이동준');
+EXEC ADD_STUDENT('009','권창수',33,'박준현');
+EXEC ADD_STUDENT('010','권덕수',44,'이유나');
+EXEC ADD_STUDENT('011','청소년',19,'이유나');
+
+-- TEACHER 테이블에 아래 데이터 추가
+--('이동준','KB',3,'개발')
+--('이유나','KB',1,'개발')
+--('박준현','KB',5,'보안')
+--('정제원','KB',1,'보안')
+EXEC ADD_TEACHER('이동준','KB',3,'개발');
+EXEC ADD_TEACHER('이유나','KB',1,'개발');
+EXEC ADD_TEACHER('박준현','KB',5,'보안');
+EXEC ADD_TEACHER('정제원','KB',1,'보안');
+
+--STUDENT, TEACHER 각각의 테이블로 출력
+SELECT * FROM STUDENT;
+SELECT * FROM TEACHER;
+
+--STUDENT, TEACHER 하나의 테이블로 출력
+SELECT * FROM STUDENT,TEACHER WHERE STUDENT.PRO = teacher.name;
+
+-- STUDENT 나이 오름차순 정렬, TEACHER 경력 내림차순 정렬
+SELECT * FROM STUDENT,TEACHER ORDER BY STUDENT.AGE ASC, TEACHER.YEAR DESC;
+
+-- 프로시저 구현해서 아래 명령문 실행
+-- 학생 중 나이가 20 미만인 학생 데이터 제거
+EXEC DEL_STUDENT();
+
+-- 교사들의 경력을 1씩 추가해서 수정하기
+EXEC UP_TEACHER();
+-- 경력 1 감소 수정 프로시저
+EXEC DOWN_TEACHER();
+
+-- SELECT 문사용 
+-- 학생들 총 인원, 나이의 총 합, 최대값, 최소값, 평균값을 모두 하나의 테이블로 출력
+SELECT COUNT(*) 총인원, SUM(AGE) 나이총합, MAX(AGE) 최대나이,
+MIN(AGE) 최소나이, AVG(AGE) 평균나이 FROM STUDENT; 
+
+-- 교사의 소속 및 담당 출력, 이때 중복되는 값은 한번만 출력되게끔 한다.
+SELECT COMPANY 소속, MAJOR 담당 FROM TEACHER GROUP BY TEACHER.COMPANY, TEACHER.MAJOR;
+
+-- 교사의 소속 및 평균 경력 출력
+SELECT COMPANY 소속, AVG(YEAR) 평균경력 FROM TEACHER GROUP BY TEACHER.COMPANY;

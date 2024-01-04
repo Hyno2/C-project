@@ -1,0 +1,187 @@
+-- 대소문자 구분 없음 문장 끝마다 세미클론(;) 넣기
+-- 단일 실행(CTRL+ENTER) / 스크립틀실행(전체 코드 실항)(F5)
+-- ALT ' 대소문자 변경
+-- DataBase = Data + Base
+-- DBMS : DB를 관리하는 시스템 => Oracle, MySql MongoDB...
+-- NOT NULL : "NULL이 되면 안되는" 속성에 작성
+-- PRIMARY KEY : 기본키, 데이터들끼리 구분하기 위한 속성에 부여
+-- || : 문자열 이어붙이기(java에서 +로 문자열 이어붙인 거랑 똑같음)
+
+-- Oracle 자료형
+-- 문자형
+-- CHAR(n) : 고정크기의 문자형 타입, 무조건 n개의 공간 할당(비효율적) 잘사용안함
+-- VALCHAR2(n) : 가변크기의 문자형 타입, '최대 n개까지'의 공간 할당
+-- NVARCHAR2(n) : 한글 또한 1개의 바이트로 취급하게 한다 원래는 한글은 3바이트
+
+-- 숫자형
+-- INT : 정수 숫자형
+-- FLOAT : 실수 숫자형
+-- NUMBER(P,S) : 정수, 실수 모두 가능, 
+--              P(정수부분 + 실수부분 최대 작성 가능한 공간)/ S(실수부분 최대 작성 가능한 공간)
+--              속성명이 HEIGHT이고 속성타입이 NUMBER(4,1) 이라 한다면
+--              000.0 형태로 저장가능 ,    171.1, 99.9, 50
+-- 그 외에도 날짜 타입, LOB형도 있음 개인적으로 알아보자
+
+-- CRUD : CREAT / READ / UPDATE / DELETE => 생성/읽기/갱신/삭제
+-- SQL문 : 위의 CRUD 기능을 수행하기 위한 명령문(질의문,쿼리문)
+--      => <DQL / DDL / DML> / DCL / TCL
+
+-- DQL(Query) : 데이터 조회
+--  SELECT문 : 데이터를 검색하는 명령어 (검색된 결과는 출력하여 표현)
+--  SELECT (칼럼명) FROM 테이블명 [WHERE 조건문];
+
+-- * : 전체 출력
+SELECT * FROM 테이블명;
+-- 두가지만 출력
+SELECT 칼럼명 FROM 테이블명;
+
+-- DDL :(Defination) : 데이터 구조(DB, 테이블, ...) 정의 , 공간정의
+--      => CREATE(생성), ALTER(수정), DROP, TRUNCATE(삭제)
+
+--  CREATE : 테이블 생성
+--	CREATE TABLE 테이블명(
+--	데이터1,데이터2, ... );
+
+-- ALTER : 테이블 수정
+-- 1. ADD 테이블 컬럼 추가하기
+--	ALTER TABLE 테이블명 ADD 컬럼명 컬럼타입;
+
+-- 2. DROP COLUMN 컬럼 삭제하기
+-- 	ALTER TABLE 테이블명 DROP COLUMN 컬럼명;
+
+-- 3. MODIFY  컬럼의  타입 변경하기
+--	ALTER TABLE 테이블명 MODIFY 컬럼명 데이터타입;
+
+-- 4. RENAME 테이블명 변경
+--	ALTER TABLE 테이블명 RENAME TO 바꿀테이블명
+--    RENAME COLUMN 컬렴명 변경하기
+--	ALTER TABLE 테이블명 RENAME COLUMN 원래컬럼명 TO 바꿀컬럼명;
+
+-- DROP, TRUNCATE 테이블 삭제
+-- DROP : 테이블 삭제(데이터, 테이블 구조 모두 삭제)
+-- TRUNCATE : 테이블안의 데이터 삭제 (데이터만 전체 삭제, 테이블 구조는 남아있다)
+--          DROP OR TRUNCATE TABLE 테이블명
+
+
+-- DML :(Manipulation) : 데이터 조작 ,직접적으로 데이터조작
+--      => INSERT(삽입), UPDATE(수정), DELETE(삭제), (+SELECT)DQL DML 둘다 포함됌
+
+--  INSERT 데이터 삽입
+--	 INSERT INTO 테이블명 (속성값1,속성값2,..) VALUES(데이터1값,데이터2값,..);
+--           INSERT INTO 테이블명 VALUES(데이터값1,데이터값2, ...);
+
+-- UPDATE  데이터수정
+--      UPDATE 테이블명 SET 칼럼1=변경값1, ... WHERE 조건절;
+
+-- DELETE 데이터 삭제 
+--	DELETE FROM 테이블명 WHERE 조건문;
+
+-- COMMIT : 변경사항을 영구적으로 적용
+-- COMMIT을 하지 않으면, 계저에 적용하였던 모든 변경사항이 날아간다
+-- 계정에 적용한 변경사항 중 중요한 내용이 있으면 되도록 COMMIT하는게 좋음
+--	COMMIT;
+
+-- ROLLBACK : 회귀한다, 돌아간다
+--  ROLLBACK; -> 마지막으로 커밋한 상태로 회귀한다
+--  ROLLBACK TO 세이브포인트명
+-- SAVEPOINT : 커밋까지는 아니고, 요 지점은 저장 하고 싶을 때
+--  SAVEPOINT[저장할_세이브포인트명];
+
+시퀀스
+
+create sequence 시퀀스명;
+시퀀스명.nextval 로쓰면 순차적으로 숫자증가된다 
+시퀀스명.currval 현재 숫자
+--시퀀스 값 바꾸는 법
+--1. 지운다.
+drop sequence mymusic;
+--2. 새로 만들되, 내가 시작하고 싶은 번호부터 시작하도록 한다.
+create sequence mymusic start with 7 increment by 1;
+
+PK 기본키
+데이터가 중복되지않는 것을 삼는다
+테이블 생성할때 뒤에 PRIMARY KEY
+
+FK 외래키 참조한다
+1.
+ALTER TABLE 테이블명 ADD CONSTRAINT 외래키명 FOREIGN KEY(참조할칼럼명)
+REFERENCES 참조할테이블(참조 할 칼럼명);
+2.
+테이블 생성할때 뒤에 REFERENCES 참조할테이블(참조할칼럼명)
+
+-- JOIN
+-- 두 개 이상의 테이블을 공통된 열(COLUMN)으로 묶는다
+SELECT 출력할 칼럼명 
+FROM 묶을테이블1 JOIN 묶을테이블2
+ON 테이블1.공통으로 묶을 칼럼1 = 테이블2.공통으로 묶을 칼럼2;
+
+-- WHERE을 사용한 JOIN문, 두 테이블을 콤마,로 묶고, WHERE문을 사용함
+SELECT 출력할 칼럼명
+FROM 묶을테이블1, 묶을테이블2
+WHERE 테이블1.공통으로 묶을 칼럼1 =테이블2.공통으로 묶을 칼럼2;
+
+LEFT JOIN
+
+RIGHT JOIN
+
+FULL JOIN
+
+SELF JOIN 하나의 테이블에서 가상의 2개의 테이블로 쪼개서 사용하는것 
+EX) 짜장면테이블을 짜장면 단품, 짜장면 세트 두개로 쪼개서 사용
+ 
+
+-- 뷰(VIEW)
+-- 뷰의 기본용도가 데이터를 보기 위함이다
+-- 가상테이블
+-- 기본적인 삭제 수정 삽입은 안되고(= 복잡한구조에는 불가능하고 단순한 구조에는 가능)
+-- 대신 원본이 바뀔시 VIEW 값도 바뀐다
+-- VIEW = SELECT 결과물
+-- SELECT문이 너무 복잡해지거나 혹은 자주 쓰이는 SELECT문을 더 편하게 불러오고자 쓰는 것
+
+CREATE VIEW MYSTUDENT AS
+SELECT KBSTUDENT.KSNAME NAME, KBMAJOR.MMJNAME MAJ_NAME FROM KBSTUDENT
+JOIN KBMAJOR ON KBSTUDENT.KSCODE = KBMAJOR.MCODE;
+
+SELECT * FROM MYSTUDENT; -- MYSTUDENT는 실제 값이 아니다
+    -- KBSTUDENT, KBMAJOR로 만들어진 가상의 표(SELECT 결과물)
+    -- DELETE, UPDATE,INSERT가 단순한 구조의 VIEW에서는 되는데
+				 가상 칼럼을 가진 VIEW에선 안 됨
+DELETE FROM MYSTUDENT WHERE MAJ_NAME = '경영';
+SELECT * FROM KBSTUDENT;
+
+INSERT INTO KBSTUDENT VALUES(2,'유지웅','002');
+
+-- VIEW를 통해서 SELECT문을 단순화하고 보다 복잡한 형태의 JOIN등도 구현이 가능함
+
+-- 순서대로 출력하는 것
+--...순으로 출력하는 것 : ORDER BY
+SELECT * FROM KBSTUDENT;
+SELECT * FROM KBSTUDENT ORDER BY KSNUM; -- 오름차순
+SELECT * FROM KBSTUDENT ORDER BY KSNUM DESC; -- 내림차순
+
+GROUP BY 테이블내에 공통되는 값을 묶어준다
+
+HAVING GROUP BY에서 조건문줄때 사용한다 WHERE절과 같은 의미
+
+열의 개수 COUNT(*)
+
+총합 SUM(칼럼명) 
+
+성별별 평균 나이 출력하기 
+SELECT 성별칼럼, AVG(나이칼럼) FROM 테이블명 GROUP BY 성별칼럼;
+
+LIKE 포함된문자나 숫자 찾을때
+SELECT * FROM 테이블명 WHERE 조건 LIKE 이%; 이씨다찾아출력
+SELECT * FROM 테이블명 WHERE 조건 LIKE %이; 이로끝나는것 출력
+SELECT * FROM 테이블명 WHERE 조건 LIKE %이%; 이만 포함되있으면 출력
+
+중첩 질의문
+EX 나이가 가장 어린사람을 찾아라 MIN(나이컬럼) 
+가장 많은사람 MAX(나이컬럼)
+SELECT * FROM 테이블명 WHERE 나이컬럼 = (SELECT MIN(나이컬럼) FROM 테이블명);
+
+-- 스크립트 출력하는법
+-- 먼저 서버에 OUTPUT 세팅을 ON 해줘야 스크립트 출력 DBMS_OUTPUT.PUT_LINE
+SET SERVEROUTPUT ON; 
+-- 스크립트 출력
+DBMS_OUTPUT.PUT_LINE("작성할 내용들");
