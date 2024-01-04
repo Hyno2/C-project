@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="radio" id="E" name="EI" value="E">
+    <label for="E">외향적(E)</label>
+    <input type="radio" id="I" name="EI" value="I">
+    <label for="I">내향적(I)</label>
+    <br>
+    <input type="radio" id="S" name="SN" value="S">
+    <label for="S">현실형(S)</label>
+    <input type="radio" id="N" name="SN" value="N">
+    <label for="N">직관형(N)</label>
+    <br>
+    <input type="radio" id="T" name="TF" value="T">
+    <label for="T">이성적(T)</label>
+    <input type="radio" id="F" name="TF" value="F">
+    <label for="F">감성적(F)</label>        
+    <br>
+    <input type="radio" id="J" name="JP" value="J">
+    <label for="J">계획형(J)</label>
+    <input type="radio" id="P" name="JP" value="P">
+    <label for="P">즉흥형(P)</label>
+    <br>
+    <input type="button" value="제출하기" onclick="mbti()">
+
+    <p id="result"></p>
+
+    <script>
+        function mbti() {
+            let one = document.querySelector('input[name="EI"]:checked');
+            let two = document.querySelector('input[name="SN"]:checked');
+            let three = document.querySelector('input[name="TF"]:checked');
+            let four = document.querySelector('input[name="JP"]:checked');
+            let resultElement = document.getElementById('result');
+
+            if (one && two && three && four) {
+                let resultString = one.value + two.value + three.value + four.value;
+
+                fetch("https://in-hyuk.github.io/HelloWebHosting/mbti.json")
+                    .then(response => {                      
+                        if(!response.ok){   
+                            throw new Error('400 or 500 error');
+                        }
+                        return response.json();
+                    })
+                    .then(data =>{                          
+                        let para = document.querySelector("#result");
+                        para.textContent = resultString + ": " + data[resultString];
+                 })
+                    .catch(error => {
+                        console.log("에러 발생");
+                    }) 
+            } else {
+                resultElement.innerHTML = "<p>모든 항목을 선택하세요.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
